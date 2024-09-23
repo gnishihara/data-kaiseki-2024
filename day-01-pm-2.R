@@ -68,4 +68,49 @@ ggsave(filename = pngfile,
 # units は寸法の単位
 # dpi は解像度、ポスター用は900、パワーポイント用は300
 
+# エラーバー付き
+# エラーバーは１標準偏差を示す
+ytitle = "Mean total length (cm)"
+ggplot(df2) + 
+  geom_point(aes(x = Sex, y = mean, color = Sex)) +
+  geom_errorbar(aes(x = Sex,
+                    ymin = mean - sd,
+                    ymax = mean + sd,
+                    color = Sex),
+                width = 0.05) +
+  scale_y_continuous(name = ytitle,
+                     limits = c(150, 350)) +
+  guides(color = "none")
+# guides() で凡例を外す
+
+pngfile = "fish_mean_length_errorbar.png"
+ggsave(filename = pngfile,
+       width = 80,
+       height = 80,
+       dpi = 300,
+       units = "mm")
+
+
+# BW Body weight のエラーバー付き散布図を作図
+
+df3 = 
+  df1 |> 
+  filter(str_detect(variable, "^BW")) # 正規表現 (regular expression)
+df3
+
+ytitle = "Mean body weight (g)"
+ggplot(df3) + 
+  geom_point(aes(x = Sex, y = mean, color = Sex)) +
+  geom_errorbar(aes(x = Sex,
+                    ymin = mean - sd,
+                    ymax = mean + sd,
+                    color = Sex),
+                width = 0.05) +
+  scale_y_continuous(name = ytitle,
+                     limits = c(0, 400)) +
+  guides(color = "none")
+
+
+
+
 
