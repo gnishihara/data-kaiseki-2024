@@ -116,8 +116,17 @@ fish_data_summary_mf =
                 sd = ~sd(., na.rm = TRUE),
                 n = ~sum(!is.na(.))))
   )
-fish_data_summary_mf
+
+fish_data_summary_mf |> 
+  pivot_longer(cols = matches("_mean|_sd|_n"))
 
 
+fish_data_summary_mf |> 
+  pivot_longer(cols = matches("_mean|_sd|_n"),
+               names_sep = "_",
+               names_to = c("variable", "statistic")) |> 
+  pivot_wider(names_from = "statistic",
+              values_from = "value") |> 
+  mutate(se = sd / sqrt(n - 1))
 
 
