@@ -73,3 +73,14 @@ rep(x = c("A", "B"), each = 3) # ベクトルの要素を３回複製する
 rep(x = c(1,2,5), each = 2)
 rep(x = c(1,2,3), times = 4)
 
+# データフレームその２
+
+fish_size = rpois(n = 10, lambda = 200) # ポアソン分布の疑似乱数関数
+fish_id = seq(from = 1, to = 10, by = 1)
+fish_loc = rep(c("A", "B"), each = 5)
+data.frame(fish_loc, fish_id, fish_size)
+
+
+
+
+
