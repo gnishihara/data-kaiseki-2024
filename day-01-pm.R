@@ -26,3 +26,16 @@ fish_data
 # UBW Bladder weight (g) 欠損値あり
 # Sex 
 
+# TL の平均値
+
+TL = fish_data$TL
+mean(TL)   # 平均値
+sd(TL)     # 標準偏差
+var(TL)    # 分散
+median(TL) # 中央値
+mad(TL)    # 中央絶対偏差
+sd(TL) / sqrt(length(TL) - 1) # 標準誤差
+
+
+
+
