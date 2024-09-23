@@ -47,8 +47,34 @@ fish_data |>
     FL_sd = sd(FL)
   )
 
+fish_data_summary = 
+  fish_data |> 
+  summarise(
+    across(c(TL, FL, SL, BW, LW, GW, UBW),
+           list(mean = mean,
+                sd = sd,
+                n = length))
+  )
+fish_data_summary
+
+fish_data_summary |> 
+  pivot_longer(cols = everything())
 
 
+fish_data_summary |> 
+  pivot_longer(cols = everything(),
+               names_sep = "_",
+               names_to = c("variable", "statistic"))
+
+# データの記述統計量の求め方
+# 欠損対応なし
+fish_data_summary |> 
+  pivot_longer(cols = everything(),
+               names_sep = "_",
+               names_to = c("variable", "statistic")) |> 
+  pivot_wider(names_from = "statistic",
+              values_from = "value") |> 
+  mutate(se = sd / sqrt(n - 1))
 
 
 
