@@ -24,8 +24,24 @@ y2 = -0.193
 fish_size1 = 190 # cm
 fish_size2 = 185 # cm
 
+# オブジェクトを用いての算数
+x + y
+x / y
+x^y # 3.13e+264 == 3.13 x 10^264
 
+# ベクトル (1d)
+fish_size = c(190, 185, 200, 210, 180) # num: numeric (実数) [1:5] 要素の数
+# fish_size には5つの要素 (Environment tab で確認できる)
+# fish_size <- c(190, 185, 200, 210, 180) # 代入演算子 <- (ALT + -)
 
+# データフレーム (2d) data.frame()
+# スプレッドシートのようなオブジェクト
+# 複数のベクトルの集まり
+
+fish_id = 1:5 # 1 から 5 の数字を fish_id にいれる
+# int: integer (整数) 
+
+data.frame(fish_id, fish_size)
 
 
 
