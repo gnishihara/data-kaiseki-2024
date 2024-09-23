@@ -35,6 +35,20 @@ var(TL)    # 分散
 median(TL) # 中央値
 mad(TL)    # 中央絶対偏差
 sd(TL) / sqrt(length(TL) - 1) # 標準誤差
+length(TL) # データ数
+
+# TL と FL の統計量
+# tibble 内のデータの統計量は summarise() を使いましょう
+fish_data |> 
+  summarise(
+    TL_mean = mean(TL),
+    TL_sd = sd(TL),
+    FL_mean = mean(FL),
+    FL_sd = sd(FL)
+  )
+
+
+
 
 
 
