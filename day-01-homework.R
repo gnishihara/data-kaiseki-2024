@@ -34,4 +34,32 @@ fish_data
 ## (1) の記述統計量をcsvファイルに保存すること。
 ############################################################
 
+## (1) BW と LW の Sex 毎の平均値と中央値を求める。
+fish_data |> 
+  group_by(Sex) |> 
+  summarise(
+    across(
+      c(BW, LW),
+      list(mean = mean, median = median)
+    )
+  )
 
+## (2) BW と LW の Sex 毎の箱ひげ図を作図する。
+ytitle = "Body weight (g)"
+ggplot(fish_data) +
+  geom_boxplot(aes(x = Sex, y = BW)) +
+  scale_y_continuous(name = ytitle)
+
+ytitle = "Liver weight (g)"
+ggplot(fish_data) +
+  geom_boxplot(aes(x = Sex, y = LW)) +
+  scale_y_continuous(name = ytitle)
+
+## (3) BW 対 LW の Sex 毎の散布図を作図する。
+
+ytitle = "Body weight (g)"
+xtitle = "Liver weight (g)"
+ggplot(fish_data) +
+  geom_point(aes(x = LW, y = BW, color = Sex, shape = Sex)) +
+  scale_x_continuous(name = xtitle) +
+  scale_y_continuous(name = ytitle)
