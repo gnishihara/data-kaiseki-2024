@@ -62,5 +62,10 @@ ggsave(filename = pngfile,
        height = 80,
        dpi = 300,
        units = "mm")
+# ggsave() を使って図を保存する
+# pdf, png, jpeg, svg, tiff, などの種類
+# width, height は図の寸法
+# units は寸法の単位
+# dpi は解像度、ポスター用は900、パワーポイント用は300
 
 
