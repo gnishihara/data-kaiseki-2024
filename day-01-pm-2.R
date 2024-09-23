@@ -38,7 +38,7 @@ ggplot(df2) +
   scale_y_continuous(name = ytitle)
 
 pngfile = "fish_mean_total_length.png"  
-ggsave(filename = pngname,
+ggsave(filename = pngfile,
        width = 80,
        height = 80,
        units = "mm")
