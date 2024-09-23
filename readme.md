@@ -7,4 +7,4 @@
 
 課題解答動画
 
-* [１日目の課題 day-01-homework.R](https://youtu.be/9vSSQeN617w)
+* [１日目の課題 (Day01/day-01-homework.R)](https://youtu.be/9vSSQeN617w)
