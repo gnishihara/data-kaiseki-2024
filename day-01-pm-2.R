@@ -44,4 +44,23 @@ ggsave(filename = pngfile,
        units = "mm")
 
 
+# 凡例の場所を調整する
+
+ytitle = "Mean total length (cm)"
+ggplot(df2) +
+  geom_col(aes(x = Sex, y = mean , fill = Sex)) +
+  scale_y_continuous(name = ytitle) +
+  theme(
+    legend.position = "inside",
+    legend.position.inside = c(0.25, 0.85),
+    legend.title = element_blank()
+  )
+
+pngfile = "fish_mean_total_length.png"  
+ggsave(filename = pngfile,
+       width = 80,
+       height = 80,
+       dpi = 300,
+       units = "mm")
+
 
