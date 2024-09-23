@@ -52,8 +52,30 @@ fish_data =
   mutate(test = sqrt(fs)) |> 
   mutate(fish_size3 = fish_size * fish_size)
   
+fish_data
 
-  
-  
-  
+# フィルターのかけ方  
+# str_detect() 文字列検索
+fish_data |> 
+  filter(str_detect(fish_loc, pattern = "B"))
 
+fish_data |> 
+  filter(near(fish_id, 8))
+
+fish_data |> 
+  filter(fish_size < 200)
+
+fish_data |> 
+  filter(between(fish_id, 3, 6))
+
+fish_data |> 
+  filter(fish_size > 210, 
+         str_detect(fish_loc, pattern = "A"))
+
+fish_data |> 
+  filter(between(fish_id, 3, 6) | fish_size > 200)
+  
+fish_data2 = 
+  fish_data |> 
+  filter(between(fish_id, 3, 6) | fish_size > 200)
+fish_data2
