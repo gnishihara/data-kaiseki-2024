@@ -16,3 +16,13 @@ fish_data =
             sheet = sheets[1],
             range = range)
 fish_data
+# No. 資料番号
+# TL Total length (mm)
+# FL Fork length びさちょう (mm)
+# SL Standard length (mm)
+# BW Body weight (g)
+# LW Liver weight (g)
+# GW Gonad weight (g)
+# UBW Bladder weight (g) 欠損値あり
+# Sex 
+
