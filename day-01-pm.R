@@ -121,7 +121,8 @@ fish_data_summary_mf |>
   pivot_longer(cols = matches("_mean|_sd|_n"))
 
 
-fish_data_summary_mf |> 
+fish_data_summary_mf2 = 
+  fish_data_summary_mf |> 
   pivot_longer(cols = matches("_mean|_sd|_n"),
                names_sep = "_",
                names_to = c("variable", "statistic")) |> 
@@ -129,4 +130,9 @@ fish_data_summary_mf |>
               values_from = "value") |> 
   mutate(se = sd / sqrt(n - 1))
 
+fish_data_summary_mf2
+csvfilename = "シキシマハナダイ_記述統計量.csv"
+
+write_csv(fish_data_summary_mf2,
+          file = csvfilename)
 
