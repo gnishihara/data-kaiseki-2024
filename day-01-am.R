@@ -43,7 +43,12 @@ fish_id = 1:5 # 1 から 5 の数字を fish_id にいれる
 fish_loc = c("A", "A", "B", "B", "B")
 
 fish_data = data.frame(fish_loc, fish_id, fish_size)
+fish_data
 
+fish_data$fish_loc # string 文字列
+fish_data$fish_id # data.frame の変数はベクトルです
+fish_data$fish_size
 
-
-
+fish_data[3, ] # 行列の位置を指定する、ここは 3 行目
+fish_data[c(1,3), ] # 1 と 3 行目の情報を返す
+fish_data[c(1,3), c(2,3)] # 1と3行、2と3列
