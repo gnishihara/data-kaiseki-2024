@@ -40,6 +40,10 @@ ggplot(fish_data) +
 ggplot(fish_data)+ 
   geom_point(aes(x = SL, y = TL, color = Sex))
 
+# Sex 毎 SL vs FL
+ggplot(fish_data)+ 
+  geom_point(aes(x = SL, y = FL, color = Sex))
+
 
 
 
