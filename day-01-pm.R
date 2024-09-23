@@ -76,6 +76,32 @@ fish_data_summary |>
               values_from = "value") |> 
   mutate(se = sd / sqrt(n - 1))
 
+# データの記述統計量の求め方
+# 欠損対応あり
 
+## メモ ##
+x = c(2, 3, 4, NA)
+mean(x) # NA が返ってくる
+mean(x, na.rm = TRUE)
+is.na(x) # NA の要素は　TRUE
+!is.na(x) # NA の要素は FALSE
+sum(is.na(x)) # NA の数
+sum(!is.na(x)) # 実数の数
+##########
+fish_data_summary = 
+  fish_data |> 
+  summarise(
+    across(c(TL, FL, SL, BW, LW, GW, UBW),
+           list(mean = ~mean(., na.rm = TRUE),
+                sd = ~sd(., na.rm = TRUE),
+                n = ~sum(!is.na(.))))
+  )
 
+fish_data_summary |> 
+  pivot_longer(cols = everything(),
+               names_sep = "_",
+               names_to = c("variable", "statistic")) |> 
+  pivot_wider(names_from = "statistic",
+              values_from = "value") |> 
+  mutate(se = sd / sqrt(n - 1))
 
