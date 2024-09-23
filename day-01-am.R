@@ -52,3 +52,24 @@ fish_data$fish_size
 fish_data[3, ] # 行列の位置を指定する、ここは 3 行目
 fish_data[c(1,3), ] # 1 と 3 行目の情報を返す
 fish_data[c(1,3), c(2,3)] # 1と3行、2と3列
+fish_data[ , 3] # 3列目
+fish_data$fish_size # 55行と同じ結果
+fish_data$fish_size[3] # データフレームの fish_size の変数から3番目の要素を返す
+
+# ベクトルの作り方その２
+
+seq(from = 1, to = 10, by = 2)
+seq(from = 0, to = 20, by = 3)
+seq(from = -4, to = 4, by = 1.2)
+seq(from = 10, to = 30, length = 3)
+seq(from = 0, to = 10, length = 5)
+
+replicate(n = 3, "A") # 行列が戻ってくる
+replicate(n = 5, c("A", "B"))
+
+rep(x = "A", times = 3) # ベクトルが戻ってくる
+rep(x = c("A", "B"), times = 3) # ベクトルを３回複製する
+rep(x = c("A", "B"), each = 3) # ベクトルの要素を３回複製する
+rep(x = c(1,2,5), each = 2)
+rep(x = c(1,2,3), times = 4)
+
