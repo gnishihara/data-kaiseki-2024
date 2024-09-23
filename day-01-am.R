@@ -40,8 +40,9 @@ fish_size = c(190, 185, 200, 210, 180) # num: numeric (実数) [1:5] 要素の�
 
 fish_id = 1:5 # 1 から 5 の数字を fish_id にいれる
 # int: integer (整数) 
+fish_loc = c("A", "A", "B", "B", "B")
 
-data.frame(fish_id, fish_size)
+fish_data = data.frame(fish_loc, fish_id, fish_size)
 
 
 
