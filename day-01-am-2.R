@@ -47,4 +47,13 @@ fish_data =
 
 fish_data
 
+fish_data = 
+  fish_data |> 
+  mutate(test = sqrt(fs)) |> 
+  mutate(fish_size3 = fish_size * fish_size)
+  
+
+  
+  
+  
 
