@@ -105,3 +105,19 @@ fish_data_summary |>
               values_from = "value") |> 
   mutate(se = sd / sqrt(n - 1))
 
+# Sex 毎の統計量
+
+fish_data_summary_mf = 
+  fish_data |> 
+  group_by(Sex) |> 
+  summarise(
+    across(c(TL, FL, SL, BW, LW, GW, UBW),
+           list(mean = ~mean(., na.rm = TRUE),
+                sd = ~sd(., na.rm = TRUE),
+                n = ~sum(!is.na(.))))
+  )
+fish_data_summary_mf
+
+
+
+
