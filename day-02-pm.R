@@ -56,6 +56,12 @@ alldata = alldata |>
          .after = id) |> 
   mutate(datetime = ymd_hms(datetime)) |> 
   select(-date, -time)
+# case_when() 条件を満たしたら ～ の右辺を返す
+
+alldata = alldata  |> 
+  mutate(location = 
+           case_when(datetime <  ymd_hm("2024-09-24 00:50") ~ "手前",
+                     datetime >= ymd_hm("2024-09-24 00:50") ~ "先端"),
+         .after = id)
 
 alldata  
-  
