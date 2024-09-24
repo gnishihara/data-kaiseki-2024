@@ -7,7 +7,12 @@ library(readxl)
 # 一番目のシート
 # 読み込み範囲 A1:I32
 
-fname = "Data/20231206シキシマハナダイ_dataset.xlsx"
+## here::here() 関数は、プロジェクトのルートフォルダを
+## 基準にして、相対的なパスを指定することができます。
+
+
+fname = here::here("Data/20231206シキシマハナダイ_dataset.xlsx")
+
 sheets = excel_sheets(fname)
 range = "A1:I32"
 
