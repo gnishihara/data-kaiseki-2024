@@ -50,11 +50,25 @@ df12 = read_csv(file = fnames[12])
 # read.csv() はベースRの関数 (data.frame) お勧めしません
 # read_csv() はtidyverseの関数 (tibble)　使いましょう
 
+df2 = df2 |> 
+  select(Depth =  `Depth (Meter)`,
+         Temperature = `Temperature (Celsius)`,
+         Salinity = `Salinity (Practical Salinity Scale)`)
 
+df3 = df3 |> 
+  select(Depth =  `Depth (Meter)`,
+         Temperature = `Temperature (Celsius)`,
+         Salinity = `Salinity (Practical Salinity Scale)`)
 
-
-
-
+df4 = df4 |> select(Depth =  `Depth (Meter)`, Temperature = `Temperature (Celsius)`, Salinity = `Salinity (Practical Salinity Scale)`)
+df5 = df5 |> select(Depth =  `Depth (Meter)`, Temperature = `Temperature (Celsius)`, Salinity = `Salinity (Practical Salinity Scale)`)
+df6 = df6 |> select(Depth =  `Depth (Meter)`, Temperature = `Temperature (Celsius)`, Salinity = `Salinity (Practical Salinity Scale)`)
+df7 = df7 |> select(Depth =  `Depth (Meter)`, Temperature = `Temperature (Celsius)`, Salinity = `Salinity (Practical Salinity Scale)`)
+df8 = df8 |> select(Depth =  `Depth (Meter)`, Temperature = `Temperature (Celsius)`, Salinity = `Salinity (Practical Salinity Scale)`)
+df9 = df9 |> select(Depth =  `Depth (Meter)`, Temperature = `Temperature (Celsius)`, Salinity = `Salinity (Practical Salinity Scale)`)
+df10 = df10 |> select(Depth =  `Depth (Meter)`, Temperature = `Temperature (Celsius)`, Salinity = `Salinity (Practical Salinity Scale)`)
+df11 = df11 |> select(Depth =  `Depth (Meter)`, Temperature = `Temperature (Celsius)`, Salinity = `Salinity (Practical Salinity Scale)`)
+df12 = df12 |> select(Depth =  `Depth (Meter)`, Temperature = `Temperature (Celsius)`, Salinity = `Salinity (Practical Salinity Scale)`)
 
 
 
