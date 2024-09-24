@@ -14,6 +14,7 @@ library(lubridate) # 時刻データ処理
 # Data フォルダの CTD_Dataset フォルダにいれましょう。
 
 # データファイルのリスト作る
+# here::here() が動かない場合、here パッケージをインストールしましょう
 folder = here::here("Data/CTD_Dataset/") # データファイルへのパス
 dir(folder)
 
