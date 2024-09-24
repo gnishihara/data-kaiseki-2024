@@ -18,6 +18,6 @@ library(lubridate) # 時刻データ処理
 folder = here::here("Data/CTD_Dataset/") # データファイルへのパス
 dir(folder) # フォルダ内のファイルのリストを返す
 
-dir(folder, full.names = TRUE) # パスありリスト
-
+fnames = dir(folder, full.names = TRUE) # パスありリスト
+fnames
 
