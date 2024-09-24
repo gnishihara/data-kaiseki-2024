@@ -136,7 +136,7 @@ ggplot(alldata) +
                      limits = c(26, 34)) +
   facet_wrap(facets = vars(location))
 
-pngname = "Output/saliniy_profile_greg_nishihara.png"
+pngname = "Output/salinity_profile_greg_nishihara.png"
 ggsave(filename = pngname,
        width = 160,
        height = 80,
