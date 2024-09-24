@@ -15,3 +15,9 @@
 * [演習 1 日目 AM 2](https://youtu.be/tbYb2qrHGjQ)
 * [演習 1 日目 PM 1](https://youtu.be/CM-Y2vYZYIs)
 * [演習 1 日目 PM 2](https://youtu.be/YcfHRNOcSwg)
+
+* [演習 2 日目 AM 0](https://youtu.be/K2JnpWuzfNw)　（宿題答え合わせ）
+* [演習 2 日目 AM 1](https://youtu.be/9qec0_Cm_4g)
+* [演習 2 日目 AM 2](https://youtu.be/jbHpc7_HrKA)
+* [演習 2 日目 PM 1](https://youtu.be/jgMANBWTlFw)
+* [演習 2 日目 PM 2](https://youtu.be/ZvIruOooox0)
