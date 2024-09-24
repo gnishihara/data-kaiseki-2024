@@ -36,5 +36,19 @@ alldata = alldata |>
 ## fnames 変数は上書きされる
 alldata = alldata |> 
   mutate(fnames = basename(fnames))
+## 正規表現を用いて、文字列から情報を抽出する
+## \\d は数字
+## \\d{8} 数字８連続抽出 
+## _\\d{6}. _123456. <-このどっとはすべての文字にマッチする
+## _\\d{6}\\. <- \\. は . だけにマッチする 
+## (?<=_)\\d{6}(?=\\.) ６桁の数字の前に _ がる存在する条件と
+## 数字のあとに . が存在する条件を満たせば、抽出する。
+
+alldata = alldata |> 
+  mutate(date = str_extract(fnames, pattern = "\\d{8}"),
+         .after = id) |> 
+  mutate(time = str_extract(fnames, pattern = "(?<=_)\\d{6}(?=\\.)"), 
+         .before = date) |> 
+  select(-fnames)
 
 
