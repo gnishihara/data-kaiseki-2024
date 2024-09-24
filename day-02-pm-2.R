@@ -43,6 +43,7 @@ ggplot(alldata) +
                  color = location)) +
   scale_x_continuous(name = xtitle) + 
   scale_y_continuous(name = ytitle) +
+  scale_color_viridis_d(end = 0.80) +
   theme(
     axis.title.x = element_markdown(),
     axis.title.y = element_markdown(),
@@ -50,7 +51,8 @@ ggplot(alldata) +
     legend.position = "inside",
     legend.position.inside = c(0, 1),
     legend.justification = c(0,1),
-    legend.background = element_blank()
+    legend.background = element_blank(),
+    panel.border = element_rect(color = "black", fill = NA)
   )
 
 pngname = "Output/mochipop_japanese.png"
