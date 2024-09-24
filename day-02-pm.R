@@ -8,8 +8,8 @@ library(tidyverse)
 library(lubridate) # 時刻データ処理
 
 # CTDファイルの下６桁の番号が 005000 以下のものが
-# ステーション１（桟橋の陸側）
-# その他はステーション２（桟橋の先端）
+# ステーション１（桟橋手前）
+# その他はステーション２（桟橋先端）
 # CTD の CSV ファイルは プロジェクトフォルダの
 # Data フォルダの CTD_Dataset フォルダにいれましょう。
 
@@ -51,4 +51,11 @@ alldata = alldata |>
          .before = date) |> 
   select(-fnames)
 
+alldata = alldata |> 
+  mutate(datetime = str_c(date, " ", time),
+         .after = id) |> 
+  mutate(datetime = ymd_hms(datetime)) |> 
+  select(-date, -time)
 
+alldata  
+  
