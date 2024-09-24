@@ -87,7 +87,7 @@ list(df1, df2, df3) # tibble のベクトル
 alldata = 
   alldata |> 
   mutate(data = list(df1, df2, df3, df4, 
-                     df5,df6, df7, df8, 
+                     df5, df6, df7, df8, 
                      df9, df10, df11, df12))
 alldata
 
