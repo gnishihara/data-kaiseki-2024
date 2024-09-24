@@ -21,3 +21,26 @@ dir(folder) # フォルダ内のファイルのリストを返す
 fnames = dir(folder, full.names = TRUE) # パスありリスト
 fnames
 
+# データの読み込み
+
+df1 = read_csv(file = fnames[1])
+df1
+colnames(df1) # tibble の変数名
+
+# 残す変数、
+# Depth, Temperature, Salinity
+df1 = df1 |> 
+  select(Depth = `Depth (Meter)`,
+         Temperature = `Temperature (Celsius)`,
+         Salinity = `Salinity (Practical Salinity Scale)`)
+
+
+
+
+
+
+
+
+
+
+
