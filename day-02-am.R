@@ -67,6 +67,31 @@ id = 1:12
 station = rep(c("桟橋手前", "桟橋先端"), each = 6)
 alldata = tibble(id, station)
 # ファイル名を追加する
-alldata |> 
+
+alldata = alldata |> 
   mutate(fnames = dir(folder))
+
+alldata = alldata |> 
+  separate(fnames, sep = "_", 
+           into = c("ctd", "date", "time"))
+# ymd() は lubridate の関数
+# 年月日のデータ処理
+alldata = 
+  alldata |> 
+  select(id, station, date) |> 
+  mutate(date = ymd(date))
+
+c(2, 4, 5) # 実数のベクトル
+list(df1, df2, df3) # tibble のベクトル
+
+alldata = 
+  alldata |> 
+  mutate(data = list(df1, df2, df3, df4, 
+                     df5,df6, df7, df8, 
+                     df9, df10, df11, df12))
+alldata
+
+
+
+
 
