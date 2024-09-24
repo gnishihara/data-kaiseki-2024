@@ -87,3 +87,56 @@ ggsave(filename = pngname,
        height = 80,
        units = "mm",
        dpi = 300)
+
+
+# おすすめの図の保存方法 ###################################
+font_add_google(name = "Noto Sans JP", family = "notosansjp")
+theme_pubr(base_size = 10,
+           base_family = "notosansjp") |> 
+  theme_set()
+
+showtext_auto()
+
+xtitle = "海水温 (&deg; C)" 
+ytitle = "水深 (m)"
+
+ggplot(alldata) + 
+  geom_point(aes(x = temperature,
+                 y = depth,
+                 color = location),
+             alpha = 0.5,
+             stroke = NA) +
+  scale_x_continuous(name = xtitle, limits = c(25, 29)) + 
+  scale_y_continuous(name = ytitle,
+                     limits = c(18, 0),
+                     breaks = seq(18, 0, length = 5),
+                     trans = "reverse") +
+  scale_color_viridis_d(end = 0.80) +
+  theme(
+    axis.title.x = element_markdown(),
+    axis.title.y = element_markdown(),
+    axis.line.x = element_blank(),
+    axis.line.y = element_blank(),
+    axis.ticks.x = element_line(color = "black"),
+    axis.ticks.y = element_line(color = "black"),
+    legend.title = element_blank(),
+    legend.position = "inside",
+    legend.position.inside = c(0, 0),
+    legend.justification = c(0, 0),
+    legend.background = element_blank(),
+    panel.border = element_rect(color = "black", fill = NA)
+  )
+
+pdfname = "Output/notosans_japanese.pdf"
+pngname = str_replace(pdfname, pattern = "pdf", replacement = "png")
+# width, height は 80 mm した理由：ちょうど学術論文の
+# １列の幅だからです。
+ggsave(filename = pdfname,
+       width = 80,
+       height = 80,
+       units = "mm")
+
+img = image_read_pdf(pdfname, density = 900)
+image_write(image = img, path = pngname)
+
+
