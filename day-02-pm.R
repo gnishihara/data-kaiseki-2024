@@ -64,4 +64,13 @@ alldata = alldata  |>
                      datetime >= ymd_hm("2024-09-24 00:50") ~ "先端"),
          .after = id)
 
-alldata  
+# alldata の data　を展開する
+# matches() に渡すパターンは正規表現
+alldata = alldata  |> 
+  unnest(data) |> 
+  select(id, location, 
+         depth = matches("^Depth"),
+         temperature = matches("^Temp"),
+         salinity = matches("^Sali"))
+
+
