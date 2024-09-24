@@ -76,3 +76,23 @@ alldata = alldata  |>
 alldata = alldata |> 
   mutate(id = factor(id),
          location = factor(location))
+
+# Output はフォルダ名、Files パネルの New Folder アイコンを
+# クリックして作ります。
+
+csvfname = "Output/CTD_dataset.csv"
+write_csv(alldata, file = csvfname)
+
+## 作図
+
+# ID ごとのプロット
+
+ytitle = "Depth (m)"
+ggplot(alldata) +
+  geom_path(aes( x = temperature, y = depth, color = id)) +
+  scale_y_continuous(name = ytitle,
+                     limits = c(18, 0),
+                     breaks = c(18, 9, 0),
+                     trans = "reverse")
+
+
