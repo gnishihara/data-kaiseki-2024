@@ -16,6 +16,8 @@ library(lubridate) # 時刻データ処理
 # データファイルのリスト作る
 # here::here() が動かない場合、here パッケージをインストールしましょう
 folder = here::here("Data/CTD_Dataset/") # データファイルへのパス
-dir(folder)
+dir(folder) # フォルダ内のファイルのリストを返す
+
+dir(folder, full.names = TRUE) # パスありリスト
 
 
