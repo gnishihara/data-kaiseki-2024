@@ -34,19 +34,45 @@ fname = here::here("Output/CTD_dataset.csv")
 alldata = read_csv(fname)
 alldata
 
-xtitle = "海水温 (&deg; C)"
+
+# ggplot() ベースレイヤー
+# geom_point()散布図レイヤー
+#   aes() で x, y, color の情報をgeom_point() に渡す
+#   alpha は記号や線の透明度（0 ~ 1）
+#   stroke は記号の線の幅
+# scale_x_continuous() はx軸スタイルを決める
+# scale_y_continuous() はy軸スタイルを決める
+# scale_color_viridis_b() は記号や線の色を決める
+# theme() で図の書式を設定する
+# 軸の書式はマークダウン (markdown) で定義できるようにする
+#   axis.title.x = element_markdown()　
+#   axis.title.y = element_markdown()　
+#   
+# HTMLでは、特定の文字や記号（例えば, &deg;）を表示するために、
+# HTMLエンティティという特殊な記述法を使用します。
+# <sup>-2</sup> 上付き
+# <sub>2</sub> 下付き
+# element_blank() 指定したものを削除する
+
+xtitle = "海水温 (&deg; C)" 
 ytitle = "水深 (m)"
 
 ggplot(alldata) + 
   geom_point(aes(x = temperature,
                  y = depth,
-                 color = location)) +
+                 color = location),
+             alpha = 0.5,
+             stroke = NA) +
   scale_x_continuous(name = xtitle) + 
   scale_y_continuous(name = ytitle) +
   scale_color_viridis_d(end = 0.80) +
   theme(
     axis.title.x = element_markdown(),
     axis.title.y = element_markdown(),
+    axis.line.x = element_blank(),
+    axis.line.y = element_blank(),
+    axis.ticks.x = element_line(color = "black"),
+    axis.ticks.y = element_line(color = "black"),
     legend.title = element_blank(),
     legend.position = "inside",
     legend.position.inside = c(0, 1),
