@@ -10,7 +10,6 @@ library(readxl)
 ## here::here() 関数は、プロジェクトのルートフォルダを
 ## 基準にして、相対的なパスを指定することができます。
 
-
 fname = here::here("Data/20231206シキシマハナダイ_dataset.xlsx")
 
 sheets = excel_sheets(fname)
