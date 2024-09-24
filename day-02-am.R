@@ -30,7 +30,7 @@ colnames(df1) # tibble の変数名
 # 残す変数、
 # Depth, Temperature, Salinity
 df1 = df1 |> 
-  select(Depth = `Depth (Meter)`,
+  select(Depth =  `Depth (Meter)`,
          Temperature = `Temperature (Celsius)`,
          Salinity = `Salinity (Practical Salinity Scale)`)
 
@@ -47,7 +47,8 @@ df10 = read_csv(file = fnames[10])
 df11 = read_csv(file = fnames[11])
 df12 = read_csv(file = fnames[12])
 
-
+# read.csv() はベースRの関数 (data.frame) お勧めしません
+# read_csv() はtidyverseの関数 (tibble)　使いましょう
 
 
 
