@@ -62,7 +62,11 @@ df10 = df10 |> select(Depth =  `Depth (Meter)`, Temperature = `Temperature (Cels
 df11 = df11 |> select(Depth =  `Depth (Meter)`, Temperature = `Temperature (Celsius)`, Salinity = `Salinity (Practical Salinity Scale)`)
 df12 = df12 |> select(Depth =  `Depth (Meter)`, Temperature = `Temperature (Celsius)`, Salinity = `Salinity (Practical Salinity Scale)`)
 
-
-
-
+# 全データ用のtibble を作る
+id = 1:12
+station = rep(c("桟橋手前", "桟橋先端"), each = 6)
+alldata = tibble(id, station)
+# ファイル名を追加する
+alldata |> 
+  mutate(fnames = dir(folder))
 
