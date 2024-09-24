@@ -50,16 +50,8 @@ df12 = read_csv(file = fnames[12])
 # read.csv() はベースRの関数 (data.frame) お勧めしません
 # read_csv() はtidyverseの関数 (tibble)　使いましょう
 
-df2 = df2 |> 
-  select(Depth =  `Depth (Meter)`,
-         Temperature = `Temperature (Celsius)`,
-         Salinity = `Salinity (Practical Salinity Scale)`)
-
-df3 = df3 |> 
-  select(Depth =  `Depth (Meter)`,
-         Temperature = `Temperature (Celsius)`,
-         Salinity = `Salinity (Practical Salinity Scale)`)
-
+df2 = df2 |> select(Depth =  `Depth (Meter)`, Temperature = `Temperature (Celsius)`, Salinity = `Salinity (Practical Salinity Scale)`)
+df3 = df3 |> select(Depth =  `Depth (Meter)`, Temperature = `Temperature (Celsius)`, Salinity = `Salinity (Practical Salinity Scale)`)
 df4 = df4 |> select(Depth =  `Depth (Meter)`, Temperature = `Temperature (Celsius)`, Salinity = `Salinity (Practical Salinity Scale)`)
 df5 = df5 |> select(Depth =  `Depth (Meter)`, Temperature = `Temperature (Celsius)`, Salinity = `Salinity (Practical Salinity Scale)`)
 df6 = df6 |> select(Depth =  `Depth (Meter)`, Temperature = `Temperature (Celsius)`, Salinity = `Salinity (Practical Salinity Scale)`)
