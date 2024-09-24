@@ -95,4 +95,17 @@ ggplot(alldata) +
                      breaks = c(18, 9, 0),
                      trans = "reverse")
 
+# location でわける
+xtitle = "Temperature (℃)"
+ytitle = "Depth (m)"
+ggplot(alldata) +
+  geom_path(aes( x = temperature, y = depth, color = id)) +
+  scale_y_continuous(name = ytitle,
+                     limits = c(18, 0),
+                     breaks = c(18, 9, 0),
+                     trans = "reverse") +
+  scale_x_continuous(name = xtitle,
+                     limits = c(25, 29),
+                     breaks = seq(25, 29, by = 1)) +
+  facet_wrap(facets = vars(location))
 
