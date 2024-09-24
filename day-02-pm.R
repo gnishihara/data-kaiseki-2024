@@ -20,3 +20,21 @@ dir(folder) # フォルダ内のファイルのリストを返す
 
 fnames = dir(folder, full.names = TRUE) # パスありリスト
 fnames
+
+# データファイルを読み込む
+alldata = tibble(fnames)
+## read_csv() を fnames 変数に適応して、
+## data 変数にcsvファイルのデータを tibble 
+## として記録する。
+alldata = alldata |> 
+  mutate(data = map(fnames, read_csv))
+## id 変数を追加する。
+alldata = alldata |> 
+  mutate(id = seq_along(fnames), 
+         .before = fnames)
+## fnames変数からファイルのパスを外す
+## fnames 変数は上書きされる
+alldata = alldata |> 
+  mutate(fnames = basename(fnames))
+
+
