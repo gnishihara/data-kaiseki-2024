@@ -72,5 +72,7 @@ alldata = alldata  |>
          depth = matches("^Depth"),
          temperature = matches("^Temp"),
          salinity = matches("^Sali"))
-
-
+# id と location を因子に変換する
+alldata = alldata |> 
+  mutate(id = factor(id),
+         location = factor(location))
