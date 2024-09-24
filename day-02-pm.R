@@ -123,4 +123,22 @@ ggsave(filename = pngname,
 # PNGファイルは天谷先生に送信する。
 # 締め切り：15:00
 
+# location でわける
+xtitle = "Salinity (-)"
+ytitle = "Depth (m)"
+ggplot(alldata) +
+  geom_path(aes( x = salinity, y = depth, color = id)) +
+  scale_y_continuous(name = ytitle,
+                     limits = c(18, 0),
+                     breaks = c(18, 9, 0),
+                     trans = "reverse") +
+  scale_x_continuous(name = xtitle,
+                     limits = c(26, 34)) +
+  facet_wrap(facets = vars(location))
 
+pngname = "Output/saliniy_profile_greg_nishihara.png"
+ggsave(filename = pngname,
+       width = 160,
+       height = 80,
+       units = "mm",
+       dpi = 300)
