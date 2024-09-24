@@ -34,6 +34,21 @@ df1 = df1 |>
          Temperature = `Temperature (Celsius)`,
          Salinity = `Salinity (Practical Salinity Scale)`)
 
+# そのほかのデータに読み込み
+df2 = read_csv(file = fnames[2])
+df3 = read_csv(file = fnames[3])
+df4 = read_csv(file = fnames[4])
+df5 = read_csv(file = fnames[5])
+df6 = read_csv(file = fnames[6])
+df7 = read_csv(file = fnames[7])
+df8 = read_csv(file = fnames[8])
+df9 = read_csv(file = fnames[9])
+df10 = read_csv(file = fnames[10])
+df11 = read_csv(file = fnames[11])
+df12 = read_csv(file = fnames[12])
+
+
+
 
 
 
