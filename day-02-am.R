@@ -91,7 +91,42 @@ alldata =
                      df9, df10, df11, df12))
 alldata
 
+# tibble-list の展開
 
+alldata = alldata |> unnest(data)
+alldata
 
+# 水温の鉛直分布の図
 
+ggplot(alldata) + 
+  geom_line(aes(x = Depth, y = Temperature, color = id))
+
+# 鉛直分布なので、縦は推進、横は水温、idは因子
+# id を因子にする (<fct>) factor 
+alldata = alldata |> mutate(id = factor(id))
+
+ggplot(alldata) + 
+  geom_line(aes(x = Temperature,
+                y = Depth,
+                color = id))
+
+ggplot(alldata) + 
+  geom_point(aes(x = Temperature,
+                y = Depth,
+                color = id))
+
+# 水深が 0.500 m 以上のものを使う
+alldata = alldata |> filter(Depth > 0.500)
+
+# geom_line() は x軸の順序によって作図
+ggplot(alldata) + 
+  geom_line(aes(x = Temperature,
+                y = Depth,
+                color = id))
+# geom_path() は tibble のデータの順序によって作図される
+ggplot(alldata) + 
+  geom_path(aes(x = Temperature,
+                y = Depth,
+                color = id)) +
+  scale_y_continuous(trans = "reverse")
 
