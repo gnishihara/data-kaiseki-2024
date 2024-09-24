@@ -109,3 +109,18 @@ ggplot(alldata) +
                      breaks = seq(25, 29, by = 1)) +
   facet_wrap(facets = vars(location))
 
+pngname = "Output/temperature_profile.png"
+ggsave(filename = pngname,
+       width = 160,
+       height = 80,
+       units = "mm",
+       dpi = 300)
+
+## 課題2 
+# （１）塩分の鉛直分布図をファイルに保存する。
+# temperature_profile.png と似たように作図する。
+# ファイル名に名前と所属大学をいれる。
+# PNGファイルは天谷先生に送信する。
+# 締め切り：15:00
+
+
