@@ -116,7 +116,7 @@ ggplot(alldata) +
                 color = id))
 
 # 水深が 0.500 m 以上のものを使う
-alldata = alldata |> filter(Depth > 0.500)
+# alldata = alldata |> filter(Depth > 0.500)
 
 # geom_line() は x軸の順序によって作図
 ggplot(alldata) + 
