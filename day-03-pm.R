@@ -11,6 +11,8 @@ library(lubridate) # 日時データの処理
 library(emmeans)   # 多重比較
 library(ggtext)    # ggplot にマークダウンを使う
 
+# install.packages("palmerpenguins")
+
 # 3種のアヤメ(Iris setosa, Iris versicolor, Iris virginica)
 
 df1 = iris |> as_tibble()
@@ -57,10 +59,22 @@ t23
 
 m1 = lm(Petal.Length ~ Species, data = df1)
 summary.aov(m1) # 一元配置分散分析
+emmeans(m1, specs = 'pairwise'~Species) # デフォルトは TukeyHSD 法
+emmeans(m1, specs = 'pairwise'~Species, # ボンフェロニー法
+        adjust = "bonferroni")
 
+# 二元配置分散分析
+# species, island, sex が因子
+# bill_length_mm, bill_depth_mm, flipper_length_mm,
+# body_mass_g, year
+df2 = palmerpenguins::penguins
 
-
-
+ggplot(df2) + 
+  geom_point(aes(x = species,
+                 y = body_mass_g, 
+                 color = sex),
+             position = position_jitterdodge(jitter.width = 0.1,
+                                             dodge.width = 0.3))
 
 
 
