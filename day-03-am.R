@@ -11,6 +11,7 @@ library(ggtext)    # ggplot 文字の処理
 library(showtext)  # ggplot フォントの読み込み
 library(magick)    # 画像処理 (imagemagick)
 
+# 長崎県新上五島町鯛ノ浦湾の海水温データ（ロガーは海底に設置した）
 fname = here::here("./Data/Temperature_Dataset/Temp_11000848_tainoura_0m_170614.csv")
 
 df1 = read_csv(fname, skip = 1)
