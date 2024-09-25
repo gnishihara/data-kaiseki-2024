@@ -11,6 +11,8 @@
 ## 課題解答動画
 
 * [1 日目の課題 (Day01/day-01-homework.R)](https://youtu.be/9vSSQeN617w)
+* [3 日目の課題 (Day03/day-03-homework.R)](https://youtu.be/RSgq99axMKk)
+
 
 ## 演習動画
 
