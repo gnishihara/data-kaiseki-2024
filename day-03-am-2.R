@@ -41,7 +41,15 @@ ggplot(df1) +
                  color = class))
 
 # S と M ごとの記述統計量
-
+# class でグループ化して
+# length と width をまたいで、
+# 平均値、中央値、最小値、最大値、標準偏差、データ数
+# を求める。
+# pivot_longer() で、length と width にマッチした
+# 変数を縦に回転して、_ を区切りにして, 変数名を分解する。
+# 分解した変数は variable と statistic にする。
+# pivot_wider() で、statistic の変数に記録した情報を
+# 変数に展開して、valueを変数の値にする
 df1 |> 
   group_by(class) |> 
   summarise(
@@ -58,6 +66,22 @@ df1 |>
                names_to = c("variable", "statistic")) |> 
   pivot_wider(names_from = statistic,
               values_from = value)
+
+# 上と同じ結果
+# ここでは、先にデータを回転する
+df1 |> 
+  pivot_longer(cols = matches("length|width")) |> 
+  group_by(class, name) |> 
+  summarise(
+    across(c(value),
+           list(m = mean,
+                median = median,
+                min = min,
+                max = max,
+                s = sd,
+                n = length)),
+    .groups = "drop"
+  )
 
 
 
