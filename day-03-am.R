@@ -55,6 +55,18 @@ df1 |>
 df2 = df2 |> 
   filter(date < as_date("2017-06-17"))
 
+# df2 のデータを図にする
+
+ggplot(df2) +
+  geom_point(aes(x = date, y = mean)) +
+  geom_errorbar(aes(x = date, 
+                    ymin = min,
+                    ymax = max),
+                width = 0.25)
+
+
+
+
 
 
 
