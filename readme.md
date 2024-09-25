@@ -5,6 +5,9 @@
 本リポジトリは2024年度水産海洋データ解析演習で紹介したRコードを保存しています。
 [水産海洋データ解析演習の詳細](http://www-mri.fish.nagasaki-u.ac.jp/ja/kyoten/)
 
+研究室のＲコードサイト:
+(https://gnishihara.github.io/kenkyushitsu-kaiseki/)
+
 ## 課題解答動画
 
 * [1 日目の課題 (Day01/day-01-homework.R)](https://youtu.be/9vSSQeN617w)
