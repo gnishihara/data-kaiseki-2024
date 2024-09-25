@@ -60,13 +60,23 @@ df2 = df2 |>
 xtitle = "Date and time"
 ytitle = "Temperature (&deg;C)"
 
+# x軸の範囲を調べる
+xlimits = df2 |> pull(date) |> range()
+xbreaks = seq(xlimits[1], xlimits[2], by = 7)
+
+tmp = c(xlimits, xbreaks) # xlimits と xbreaks をつなげる
+tmp = sort(tmp) # 順序を整理する
+xbreaks = tmp[!duplicated(tmp)] # 重複している情報を外す
+
 ggplot(df2) +
   geom_point(aes(x = date, y = mean)) +
   geom_errorbar(aes(x = date, 
                     ymin = min,
                     ymax = max),
                 width = 0.25) +
-  scale_x_continuous(name = xtitle) +
+  scale_x_date(name = xtitle,
+               limits = xlimits,
+               breaks = xbreaks) +
   scale_y_continuous(name = ytitle) +
   theme(
     axis.title.x = element_markdown(),
