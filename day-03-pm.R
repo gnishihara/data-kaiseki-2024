@@ -76,6 +76,12 @@ ggplot(df2) +
              position = position_jitterdodge(jitter.width = 0.1,
                                              dodge.width = 0.3))
 
+m0 = lm(body_mass_g ~ 1, data = df2) # 帰無モデル
+m1 = lm(body_mass_g ~ species, data = df2) # species に対するモデル
+m2 = lm(body_mass_g ~ sex, data = df2) # sex に対するモデル
+m3 = lm(body_mass_g ~ species + sex, data = df2) # species + sex に対するモデル
+m4 = lm(body_mass_g ~ species + sex + species:sex, data = df2) # フルモデル（相互作用項あり）
+
 
 
 
