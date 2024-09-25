@@ -35,8 +35,40 @@ m2 = lm(Petal.Length ~ Species, data = df1)               # 傾きなしモデ�
 m3 = lm(Petal.Length ~ Petal.Width + Species, data = df1) # 相互作用なしモデル
 m4 = lm(Petal.Length ~ Petal.Width * Species, data = df1) # フルモデル
 
+AIC(m0, m1, m2, m3, m4) # m4 モデルのAICが最も低いので、とりあえず採択する
 
+# 診断図の確認
+plot(m4, which = 1) # 残渣対期待
+plot(m4, which = 3) # 標準化残渣対期待
+plot(m4, which = 2) # QQplot (正規性の確認)
 
+summary.aov(m4)
+
+# ペア毎の傾きの比較
+# 診断図に問題があった（等分散性ではない、正規性ではない）
+# ペア毎の比較の評価は厳しい
+emtrends(m4, 'pairwise' ~ Species, var = "Petal.Width")
+
+# 期待値ようの tibble を準備する
+pdata = df1 |> 
+  expand(Species,
+         Petal.Width = seq(min(Petal.Width),
+                           max(Petal.Width),
+                           length = 21))
+
+tmp = predict(m4, newdata = pdata, se.fit = TRUE) |> 
+  as_tibble()
+
+pdata = bind_cols(pdata, tmp)
+
+ggplot(df1) + 
+  geom_point(aes(x = Petal.Width,
+                 y = Petal.Length,
+                 color = Species)) +
+  geom_line(aes(x = Petal.Width,
+                y = fit,
+                color = Species),
+            data = pdata)
 
 
 
