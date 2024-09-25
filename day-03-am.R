@@ -27,6 +27,33 @@ df1 = df1 |>
   mutate(datetime = parse_date_time(datetime,
                                     orders = "%m/%d/%Y %I:%M:%S %p"))
 
+df1 |> head(n = 3) # tibble の最初の3行を表示する
+df1 |> tail(n = 4) # tibble の最後の4行を表示する
+
+ggplot(df1) + 
+  geom_point(aes(x = datetime, y = temperature))
+
+# 一日当たりの最小、平均、最大水温を求める
+
+df1 = df1 |> 
+  mutate(date = as_date(datetime), .before = "datetime")
+
+df2 = 
+  df1 |> 
+  group_by(date) |> 
+  summarise(min = min(temperature),
+            mean = mean(temperature),
+            max = max(temperature),
+            n = length(temperature))
+
+df2 |> print(n = 50) # 2017-06-17 のデータは N = 17
+
+df1 |> 
+  filter(date == as_date("2017-06-17"))
+
+# 2017-06-17 のデータを外す
+df2 = df2 |> 
+  filter(date < as_date("2017-06-17"))
 
 
 
