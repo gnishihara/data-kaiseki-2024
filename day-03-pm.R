@@ -67,6 +67,12 @@ emmeans(m1, specs = 'pairwise'~Species, # ボンフェロニー法
 # species, island, sex が因子
 # bill_length_mm, bill_depth_mm, flipper_length_mm,
 # body_mass_g, year
+# 作業仮設：Species と Sex によって body mass は異なる
+# 帰無仮説：
+#   Species による効果はない
+#   Sex による効果はない
+#   Species と Sex による効果はない
+ 
 df2 = palmerpenguins::penguins
 
 ggplot(df2) + 
@@ -75,14 +81,16 @@ ggplot(df2) +
                  color = sex),
              position = position_jitterdodge(jitter.width = 0.1,
                                              dodge.width = 0.3))
-
+df2 = df2 |> drop_na() # NA を解析データから外す
 m0 = lm(body_mass_g ~ 1, data = df2) # 帰無モデル
 m1 = lm(body_mass_g ~ species, data = df2) # species に対するモデル
 m2 = lm(body_mass_g ~ sex, data = df2) # sex に対するモデル
 m3 = lm(body_mass_g ~ species + sex, data = df2) # species + sex に対するモデル
 m4 = lm(body_mass_g ~ species + sex + species:sex, data = df2) # フルモデル（相互作用項あり）
+# 相互作用は species:sex です。
+# AIC (Akaike Information Criterion)
+# 一番低いAICがもっともいいモデル
+AIC(m0, m1, m2, m3, m4)
 
-
-
-
-
+summary.aov(m4) # 分散分析表
+# すべての効果のP値は 0.05 より引くい
