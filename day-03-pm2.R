@@ -236,6 +236,26 @@ ggplot(df1) +
 #          mu = exp(eta) # リンク関数
 # m4: mu = lpw + species + lpw:species; 
 # 　　log(y) ~ Normal(mu, error)
+# https://gnishihara.github.io/kenkyushitsu-kaiseki/glm.html#一般化線形モデル
+
+
+## 課題
+## iris の Sepal.Length ~ Sepal.Width*Species の解析をしましょう。
+## （１）lm() で当てはめてみる
+## （２）glm() で当てはめてみる（family = Gamma("log")）
+## どちらがいいか？
+## 作成する図：
+## 各モデルの診断図、
+## 各モデルのモデルとデータの図
+## 
+## Script ファイルのファイル名に名前をいれて、天谷先生に提出する。
+## 
+
+
+
+
+
+
 
 
 
