@@ -123,6 +123,34 @@ summary.aov(m4)
 emtrends(m4, 'pairwise' ~ Species, var = "lpw")
 
 
+pdata = df1 |> 
+  group_by(Species) |> 
+  expand(Petal.Width = seq(min(Petal.Width),
+                           max(Petal.Width),
+                           length = 21))
+pdata = pdata |> 
+  mutate(lpw = log(Petal.Width))
+
+tmp = predict(m4, newdata = pdata, se.fit = TRUE) |> 
+  as_tibble()
+
+pdata = bind_cols(pdata, tmp)
+
+ggplot(df1) + 
+  geom_point(aes(x = Petal.Width,
+                 y = Petal.Length,
+                 color = Species)) +
+  geom_ribbon(aes(x = Petal.Width,
+                  ymin = exp(fit - se.fit),
+                  ymax = exp(fit + se.fit),
+                  fill = Species),
+              data = pdata,
+              alpha = 0.5) +
+  geom_line(aes(x = Petal.Width,
+                y = exp(fit),
+                color = Species),
+            data = pdata) 
+
 
 
 
