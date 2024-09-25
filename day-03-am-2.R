@@ -84,5 +84,19 @@ df1 |>
   )
 
 
+df1 |> 
+  pivot_longer(cols = matches("length|width")) |> 
+  group_by(class, name) |> 
+  summarise(
+    mean = mean(value),
+    median = median(value),
+    min = min(value),
+    max = max(value),
+    sd = sd(value),
+    n = length(value),
+    .groups = "drop"
+  ) |> 
+  mutate(se = sd / sqrt(n - 1))
+
 
 
