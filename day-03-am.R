@@ -104,6 +104,12 @@ df3 = df1 |>
 
 
 
+# 横軸：hour
+# 縦軸：mean
+
+ggplot(df3) + 
+  geom_point(aes(x = hour,
+                 y = mean))
 
 
 
