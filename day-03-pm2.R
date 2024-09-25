@@ -118,6 +118,7 @@ AIC(m0, m1, m2, m3, m4) # m4 モデルのAICが最も低いので、とりあえ
 plot(m4, which = 1) # 残渣対期待
 plot(m4, which = 3) # 標準化残渣対期待
 plot(m4, which = 2) # QQplot (正規性の確認)
+
 summary.aov(m4)
 # ペア毎の傾きの比較
 # 診断図に問題があった（等分散性ではない、正規性ではない）
@@ -156,12 +157,11 @@ ggplot(df1) +
 # 一般化線形モデル（分布を ガンマ分布）
 
 g0 = glm(Petal.Length ~ 1, data = df1, family = Gamma("log"))
-g1 = glm(Petal.Length ~ Petal.Width, data = df1, family = Gamma("log"))
+g1 = glm(Petal.Length ~ lpw, data = df1, family = Gamma("log"))
 g2 = glm(Petal.Length ~ Species, data = df1, family = Gamma("log"))
-g3 = glm(Petal.Length ~ Petal.Width + Species, data = df1, family = Gamma("log"))
-g4 = glm(Petal.Length ~ Petal.Width * Species, data = df1, family = Gamma("log"))
+g3 = glm(Petal.Length ~ lpw + Species, data = df1, family = Gamma("log"))
+g4 = glm(Petal.Length ~ lpw * Species, data = df1, family = Gamma("log"))
 AIC(g0, g1, g2, g3, g4) # g4 のAICが最も低い
-
 
 # ランダム化残渣 (randomized quantile residuals) を追加する
 # モデル期待値も追加する
@@ -173,7 +173,7 @@ df1 = df1 |>
 ## 残渣対期待値
 ggplot(df1) + geom_point(aes(x = fit, y = qresid))
 
-## 評価化残渣対期待値
+## 標準化残渣対期待値
 df1 = df1 |> mutate(stdqr = sqrt(abs(scale(qresid)[, 1])))
 ggplot(df1) + geom_point(aes(x = fit, y = stdqr))
 
@@ -185,6 +185,57 @@ ggplot(df1) +
   geom_qq(aes(sample = qresid)) +
   geom_qq_line(aes(sample = qresid))
 
+
+
+
+anova(g4) # デビアス表
+# ペア毎の傾きの比較
+# 診断図に問題があった（等分散性ではない、正規性ではない）
+# ペア毎の比較の評価は厳しい
+emtrends(g4, 'pairwise' ~ Species, var = "lpw")
+emtrends(m4, 'pairwise' ~ Species, var = "lpw")
+
+
+pdata = df1 |> 
+  group_by(Species) |> 
+  expand(Petal.Width = seq(min(Petal.Width),
+                           max(Petal.Width),
+                           length = 21))
+pdata = pdata |> 
+  mutate(lpw = log(Petal.Width))
+
+tmp = predict(g4, newdata = pdata, se.fit = TRUE) |> 
+  as_tibble()
+
+pdata = bind_cols(pdata, tmp)
+
+ggplot(df1) + 
+  geom_point(aes(x = Petal.Width,
+                 y = Petal.Length,
+                 color = Species)) +
+  geom_ribbon(aes(x = Petal.Width,
+                  ymin = exp(fit - se.fit),
+                  ymax = exp(fit + se.fit),
+                  fill = Species),
+              data = pdata,
+              alpha = 0.5) +
+  geom_line(aes(x = Petal.Width,
+                y = exp(fit),
+                color = Species),
+            data = pdata) 
+
+# m4 と g4 の結果はほぼ同じでした。
+# モデルの違い
+# g4 = glm(Petal.Length ~ lpw * Species, data = df1, family = Gamma("log"))
+# m4 = lm(lpl ~ lpw * Species, data = df1) # フルモデル
+# 一般化線形モデルの場合、Gamma 分布とログリンク関数
+# 一般線形モデル Petal.Length のログ変換
+# 
+# g4: eta    = lpw + species + lpw:species; 
+#          y ~ Gamma(mu, theta); 
+#          mu = exp(eta) # リンク関数
+# m4: mu = lpw + species + lpw:species; 
+# 　　log(y) ~ Normal(mu, error)
 
 
 
