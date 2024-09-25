@@ -71,4 +71,32 @@ ggplot(df1) +
             data = pdata)
 
 
+# 期待値ようの tibble を準備する
+pdata = df1 |> 
+  group_by(Species) |> 
+  expand(Petal.Width = seq(min(Petal.Width),
+                           max(Petal.Width),
+                           length = 21))
+
+tmp = predict(m4, newdata = pdata, se.fit = TRUE) |> 
+  as_tibble()
+
+pdata = bind_cols(pdata, tmp)
+
+ggplot(df1) + 
+  geom_point(aes(x = Petal.Width,
+                 y = Petal.Length,
+                 color = Species)) +
+  geom_ribbon(aes(x = Petal.Width,
+                  ymin = fit - se.fit,
+                  ymax = fit + se.fit,
+                  fill = Species),
+              data = pdata,
+              alpha = 0.5) +
+  geom_line(aes(x = Petal.Width,
+                y = fit,
+                color = Species),
+            data = pdata) 
+
+
 
