@@ -22,3 +22,21 @@ ggplot(df1) +
   geom_point(aes(x = Petal.Width,
                  y = Petal.Length,
                  color = Species))
+# CTRL + ALT + B # 上から現在の行まで実行する
+
+# 作業仮設：花弁の長さと幅の関係は種によってことなる 
+# 帰無仮説：花弁の長さと幅の関係（傾き）は等しい
+
+# Petal.Width * Species = Petal.Length + Species + Petal.Length:Species
+
+m0 = lm(Petal.Length ~ 1, data = df1)                     # 帰無モデル
+m1 = lm(Petal.Length ~ Petal.Width, data = df1)           # 傾き等しいモデル
+m2 = lm(Petal.Length ~ Species, data = df1)               # 傾きなしモデル
+m3 = lm(Petal.Length ~ Petal.Width + Species, data = df1) # 相互作用なしモデル
+m4 = lm(Petal.Length ~ Petal.Width * Species, data = df1) # フルモデル
+
+
+
+
+
+
