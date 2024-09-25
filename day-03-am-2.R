@@ -40,5 +40,25 @@ ggplot(df1) +
   geom_point(aes(x = width, y = length,
                  color = class))
 
+# S と M ごとの記述統計量
+
+df1 |> 
+  group_by(class) |> 
+  summarise(
+    across(c(length, width),
+           list(m = mean,
+                median = median,
+                min = min,
+                max = max,
+                s = sd,
+                n = length))
+  ) |> 
+  pivot_longer(cols = matches("length|width"),
+               names_sep = "_",
+               names_to = c("variable", "statistic")) |> 
+  pivot_wider(names_from = statistic,
+              values_from = value)
+
+
 
 
