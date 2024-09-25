@@ -106,7 +106,6 @@ plot(m4, which = 1) # 残渣対期待値の図
 plot(m4, which = 3) # 標準化残渣対期待値の図
 plot(m4, which = 2) # 正規性の確認(QQplot)
 # 診断図に問題はなかったので、m4 モデルを採択する
-
 # m4 を用いた多重比較
 # Species 内の sex 毎の多重比較
 emmeans(m4, 
@@ -120,8 +119,6 @@ emmeans(m4,
 # すべての組み合わせのペア事比較 
 # ナンセンスですので、普段はしません。
 emmeans(m4, specs = 'pairwise' ~ species:sex)
-
-
 
 
 
