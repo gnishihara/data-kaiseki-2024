@@ -9,6 +9,8 @@ library(tidyverse) # tidyverse
 library(lubridate) # 日時データの処理
 library(emmeans)   # 多重比較
 library(ggtext)    # ggplot にマークダウンを使う
+library(statmod)   # ランダム化残渣よう
+
 
 # install.packages("palmerpenguins")
 
@@ -150,6 +152,38 @@ ggplot(df1) +
                 y = exp(fit),
                 color = Species),
             data = pdata) 
+
+# 一般化線形モデル（分布を ガンマ分布）
+
+g0 = glm(Petal.Length ~ 1, data = df1, family = Gamma("log"))
+g1 = glm(Petal.Length ~ Petal.Width, data = df1, family = Gamma("log"))
+g2 = glm(Petal.Length ~ Species, data = df1, family = Gamma("log"))
+g3 = glm(Petal.Length ~ Petal.Width + Species, data = df1, family = Gamma("log"))
+g4 = glm(Petal.Length ~ Petal.Width * Species, data = df1, family = Gamma("log"))
+AIC(g0, g1, g2, g3, g4) # g4 のAICが最も低い
+
+
+# ランダム化残渣 (randomized quantile residuals) を追加する
+df1 = df1 |> 
+  mutate(qresid = qresiduals(g4),
+         fit = predict(g4))
+
+# 診断図の確認
+## 残渣対期待値
+ggplot(df1) + geom_point(aes(x = fit, y = qresid))
+
+## 評価化残渣対期待値
+df1 = df1 |> mutate(stdqr = sqrt(abs(scale(qresid)[, 1])))
+ggplot(df1) + geom_point(aes(x = fit, y = stdqr))
+
+## QQplot （正規性の確認）
+## 一般化線形モデルで指定した分布にかかわらず、
+## モデル当てはめに問題がなければ、
+## ランダム化残渣は正規分布に従う。
+ggplot(df1) +
+  geom_qq(aes(sample = qresid)) +
+  geom_qq_line(aes(sample = qresid))
+
 
 
 
