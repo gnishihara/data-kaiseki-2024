@@ -164,6 +164,7 @@ AIC(g0, g1, g2, g3, g4) # g4 のAICが最も低い
 
 
 # ランダム化残渣 (randomized quantile residuals) を追加する
+# モデル期待値も追加する
 df1 = df1 |> 
   mutate(qresid = qresiduals(g4),
          fit = predict(g4))
