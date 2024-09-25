@@ -44,6 +44,25 @@ t13 = t.test(Petal.Length ~ Species,
 t23 = t.test(Petal.Length ~ Species,
              data = filter(df1, !str_detect(Species, "setosa")))
 
-t12
+t12 # t値 (-39.49), 自由度 (62.14), p値 (<2.2e-16)
+t13
+t23
+# 一つの作業仮設にたいして、t検定を複数回すると、
+# 第１種の誤りを起こしやすい。
+# ３回比較した場合、第１誤り = (1-(1-0.05)^3)
+(1-(1-0.05)^3)
+
+
+# 数種類の因子の影響を見たいとき、分散分析
+
+m1 = lm(Petal.Length ~ Species, data = df1)
+summary.aov(m1) # 一元配置分散分析
+
+
+
+
+
+
+
 
 
