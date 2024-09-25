@@ -107,9 +107,31 @@ df3 = df1 |>
 # 横軸：hour
 # 縦軸：mean
 
+xtitle = "Hour (hr)"
+ytitle = "Temperature (&deg;C)"
+
+xlimits = c(0, 24)
+xbreaks = seq(0, 24, by = 6)
 ggplot(df3) + 
-  geom_point(aes(x = hour,
-                 y = mean))
+  geom_point(aes(x = hour, y = mean)) +
+  geom_errorbar(aes(x = hour,
+                    ymin = min,
+                    ymax = max),
+                width = 0) +
+  geom_errorbar(aes(x = hour,
+                    ymin = mean - sd,
+                    ymax = mean + sd),
+                width = 0,
+                color = "black",
+                linewidth = 1) +
+  scale_x_continuous(name = xtitle,
+                     breaks = xbreaks,
+                     limits = xlimits) +
+  scale_y_continuous(name = ytitle) +
+  theme(
+    axis.title.x = element_markdown(),
+    axis.title.y = element_markdown()
+  )
 
 
 
