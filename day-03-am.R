@@ -57,12 +57,21 @@ df2 = df2 |>
 
 # df2 のデータを図にする
 
+xtitle = "Date and time"
+ytitle = "Temperature (&deg;C)"
+
 ggplot(df2) +
   geom_point(aes(x = date, y = mean)) +
   geom_errorbar(aes(x = date, 
                     ymin = min,
                     ymax = max),
-                width = 0.25)
+                width = 0.25) +
+  scale_x_continuous(name = xtitle) +
+  scale_y_continuous(name = ytitle) +
+  theme(
+    axis.title.x = element_markdown(),
+    axis.title.y = element_markdown()
+  )
 
 
 
