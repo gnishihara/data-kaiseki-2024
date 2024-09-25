@@ -99,8 +99,6 @@ ggplot(df1) +
             data = pdata) 
 
 # 診断図に問題があってので、データ解析を工夫しましょう
-
-
 df1 = df1 |> 
   mutate(lpl = log(Petal.Length),
          lpw = log(Petal.Width), 
