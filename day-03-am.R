@@ -83,7 +83,24 @@ ggplot(df2) +
     axis.title.y = element_markdown()
   )
 
+# 時間ごとの集計 (0:23)
 
+df1 = df1 |> 
+  mutate(hour = hour(datetime))
+
+ggplot(df1) + 
+  geom_point(aes(x = hour,
+                 y = temperature))
+
+
+df3 = df1 |> 
+  group_by(hour) |> 
+  summarise(min = min(temperature),
+            mean = mean(temperature),
+            max = max(temperature),
+            sd = sd(temperature),
+            n = length(temperature)) |> 
+  mutate(se = sd / sqrt(n - 1))
 
 
 
