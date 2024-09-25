@@ -11,6 +11,7 @@
 ## 課題解答動画
 
 * [1 日目の課題 (Day01/day-01-homework.R)](https://youtu.be/9vSSQeN617w)
+* [2 日目の課題の解答は演習2日AM0の動画を参考に](https://youtu.be/K2JnpWuzfNw)
 * [3 日目の課題 (Day03/day-03-homework.R)](https://youtu.be/RSgq99axMKk)
 
 
@@ -26,3 +27,4 @@
 * [演習 2 日目 AM 2](https://youtu.be/jbHpc7_HrKA)
 * [演習 2 日目 PM 1](https://youtu.be/jgMANBWTlFw)
 * [演習 2 日目 PM 2](https://youtu.be/ZvIruOooox0)
+
