@@ -133,5 +133,37 @@ ggplot(df3) +
     axis.title.y = element_markdown()
   )
 
+# 線とリボン
 
+xtitle = "Hour (hr)"
+ytitle = "Temperature (&deg;C)"
 
+xlimits = c(0, 24)
+xbreaks = seq(0, 24, by = 6)
+ggplot(df3) + 
+  geom_ribbon(aes(x = hour,
+                    ymin = min,
+                    ymax = max)) +
+  geom_ribbon(aes(x = hour,
+                    ymin = mean - sd,
+                    ymax = mean + sd),
+              fill = "grey50") +
+  geom_line(aes(x = hour, y = mean),
+            color = "white") +
+  scale_x_continuous(name = xtitle,
+                     breaks = xbreaks,
+                     limits = xlimits) +
+  scale_y_continuous(name = ytitle) +
+  theme(
+    axis.title.x = element_markdown(),
+    axis.title.y = element_markdown()
+  )
+
+pdfname = "temperature-hour.pdf"
+pngname = str_replace(pdfname, "pdf", "png")
+ggsave(pdfname,
+       width = 80,
+       height = 80,
+       units = "mm")
+i = image_read_pdf(pdfname, density = 600)
+image_write(i, path = pngname)
