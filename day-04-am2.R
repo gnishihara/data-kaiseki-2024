@@ -352,22 +352,23 @@ ggplot(df1) +
     legend.title = element_blank()
   )
 
-xtitle2 = "Distance to Santa Cruz (km / 30)"
+xtitle2 = "Distance to Santa Cruz (km)"
 ggplot(df1) +
-  geom_ribbon(aes(x = Scruz30,
+  geom_ribbon(aes(x = Scruz,
                   ymin = exp(fit - se.fit),
-                  ymax = exp(fit + se.fit)),
+                  ymax = exp(fit + se.fit),
+                  fill = level),
               data = rdata,
               alpha = 0.5) +
-  geom_line(aes(x = Scruz30, y = exp(fit)),
+  geom_line(aes(x = Scruz, y = exp(fit), color = level),
             data = rdata) + 
-  geom_point(aes(x = Scruz30, y = Species)) +
+  geom_point(aes(x = Scruz, y = Species)) +
   scale_x_continuous(name = xtitle2,
-                     limits = c(0, 10),
-                     breaks = seq(0, 10, by = 2)) +
+                     limits = c(0, 300),
+                     breaks = seq(0, 300, by = 60)) +
   scale_y_continuous(name = ytitle,
-                     limits = c(0, 650),
-                     breaks = seq(0, 650, by = 130)) +
+                     limits = c(0, 800),
+                     breaks = seq(0, 800, length = 5)) +
   theme(
     axis.title.x = element_markdown(),
     axis.title.y = element_markdown(),
@@ -376,6 +377,11 @@ ggplot(df1) +
     axis.ticks.x = element_line(color = "black"),
     axis.ticks.y = element_line(color = "black"),
     panel.border = element_rect(fill = NA, color = "black"),
+    legend.position = "inside",
+    legend.position.inside = c(1, 1),
+    legend.justification = c(1, 1),
+    legend.background = element_blank(),
+    legend.title = element_blank()
   )
 
 
