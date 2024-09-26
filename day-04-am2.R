@@ -174,3 +174,39 @@ ggplot(df3)  +
   geom_abline(slope = 1)
 
 summary(m3)
+
+# 論文に入れる図
+
+font_add_google("Noto Sans", family = "ns")
+theme_pubr(base_size = 10,
+           base_family = "ns") |> 
+  theme_set()
+
+pdata = df1 |> 
+  expand(Area = seq(min(Area), max(Area), length = 5),
+         Scruz = seq(min(Scruz), max(Scruz), length = 5))
+pdata = pdata |> 
+  mutate(logArea = log(Area),
+         Scruz30 = Scruz/30)
+tmp = predict(m3, newdata = pdata, se.fit = TRUE) |> as_tibble()
+
+pdata = bind_cols(pdata, tmp)
+
+ggplot(df1) +
+  geom_line(aes(x  = logArea, y = exp(fit)), 
+            data = pdata) +
+  geom_point(aes(x = logArea, y = Species))
+
+
+
+
+ggplot(df1) +
+  geom_point(aes(x = Scruz30, y = Species))
+
+
+
+
+
+
+
+
