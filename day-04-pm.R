@@ -168,5 +168,38 @@ ggplot() +
   facet_grid(rows = vars(Type),
              cols = vars(Treatment))
 
+# m3 の診断図
   
+df1 = df1 |> 
+  mutate(residuals = residuals(m3),
+         fit = predict(m3)) |> 
+  mutate(stdresid = sqrt(abs(scale(residuals)[,1])))
+
+p1 = ggplot(df1) + geom_point(aes(x = fit, y = residuals))
+p2 = ggplot(df1) + geom_point(aes(x = fit, y = stdresid))
+p3 = ggplot(df1) +
+  geom_qq(aes(sample = residuals)) + 
+  geom_qq_line(aes(sample = residuals))
+
+p1 + p2 + p3 + plot_layout(ncol = 2, nrow = 2)
+# 診断図に問題はなかった。m3 を採択しましょう
+
+## 4日目の課題
+# iris データの解析をする
+# 作業仮設は、種毎の花弁の長さは、花弁の幅とがく弁長さと
+# 幅関係がある。
+# 解析には一般化線形モデルを用いる。
+# （１）モデルの summary() を示す
+# （２）診断図を確認する（診断図をファイルに保存）
+# 提出物：スクリプトファイルと診断図の図。
+# 提出物は天谷先生に送信してください.
+
+
+
+
+
+
+
+
+
 
