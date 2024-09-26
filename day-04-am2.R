@@ -15,6 +15,12 @@ library(emmeans)
 library(patchwork) # 図用の演算子
 library(statmod) # ランダム化残渣の関数用
 
+# フォントの読み込みとggplotの書式設定
+
+font_add_google("Noto Sans", family = "ns")
+theme_pubr(base_size = 10, base_family = "ns") |> theme_set()
+showtext_auto()
+
 # データの準備
 # :: <- この演算子は、パッケージにある関数・データを、パッケージを読まず使うためのものです。
 df1 = faraway::gala |> as_tibble(rownames = "Island") # faraway パッケージのgala データを tibble化する
@@ -376,11 +382,12 @@ ggplot(df1) +
   scale_color_viridis_d(end = 0.9) +
   theme(
     axis.title.x = element_markdown(),
-    axis.title.y = element_markdown(),
+    axis.title.y = element_blank(),
     axis.line.x = element_blank(),
     axis.line.y = element_blank(),
     axis.ticks.x = element_line(color = "black"),
     axis.ticks.y = element_line(color = "black"),
+    axis.text.y = element_blank(),
     panel.border = element_rect(fill = NA, color = "black"),
     legend.position = "inside",
     legend.position.inside = c(1, 1),
@@ -389,13 +396,23 @@ ggplot(df1) +
     legend.title = element_blank()
   )
 
-
-plot1 + plot2 + plot_layout(ncol = 2)
+plot1 + 
+  plot2 + 
+  plot_annotation(tag_levels = "A",
+                  tag_prefix = "(",
+                  tag_suffix = ")",
+                  caption = "Lines indicate expected value, symbols indicate data, the shaded is the 95% confidence interval.",
+                  title = "The vegetation species in the Galapagos Islands increases with increasing 
+                  island area and decreases with distance from Santa Cruz Island.") +
+  plot_layout(ncol = 2)
 
 pdfname = "galapagos_ab.pdf"
 pngname = str_replace(pdfname, "pdf", "png")
 ggsave(filename = pdfname, 
-       width = 160, height = 80, units = "mm")
+       width = 160, height = 100, units = "mm")
+
+img = image_read_pdf(pdfname, density = 300)
+image_write(img, path = pngname)
 
 
 ggplot(df1) + 
