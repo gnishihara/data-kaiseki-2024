@@ -37,17 +37,23 @@ df1 = CO2 |> as_tibble()
 # uptake: CO2吸収速度
 # Plant, type, treatment  # 因子
 # treatment: 前夜に低い温度を経験したか否か
+
+# すべてのデータをまとめて表示する
+ggplot(df1) + 
+  geom_point(aes(x = conc, y = uptake, 
+                 color = Plant)) 
+
+# type と treatment 毎に表示する
 ggplot(df1) + 
   geom_point(aes(x = conc, y = uptake, 
                  color = Plant)) +
   facet_grid(rows = vars(Treatment),
              cols = vars(Type))
 
-
-
-
-
-
+# Generalized Additive Model (GAM) のあてはめ
+m1 = gam(uptake ~ s(conc, k = 5, bs = "tp"), data = df1)
+draw(m1) # gratia パッケージの関数
+basis(m1) |> draw()
 
 
 
