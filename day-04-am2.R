@@ -184,29 +184,69 @@ theme_pubr(base_size = 10,
 
 # モデル用のデータを作成する
 pdata = df1 |> 
-  expand(Area = seq(min(Area), max(Area), length = 5),
-         Scruz = seq(min(Scruz), max(Scruz), length = 5))
-
+  expand(logArea = seq(min(logArea), max(logArea), length = 21),
+         Scruz30 = seq(min(Scruz30), max(Scruz30), length = 5))
 pdata = pdata |> 
-  mutate(logArea = log(Area),
-         Scruz30 = Scruz/30)
+  mutate(Area = exp(logArea),
+         Scruz = Scruz30 * 30)
 tmp = predict(m3, newdata = pdata, se.fit = TRUE) |> as_tibble()
-
 pdata = bind_cols(pdata, tmp)
 
-# モデルとデータの図
+
+# Scruzの中央値に対するlogAreaの結果
+
+qdata = df1 |> 
+  expand(logArea = seq(min(logArea), max(logArea), length = 21),
+         Scruz30 = median(Scruz30)) |> 
+  mutate(Area = exp(logArea),
+         Scruz = Scruz30 * 30)
+tmp = predict(m3, newdata = qdata, se.fit = TRUE) |> as_tibble()
+qdata = bind_cols(qdata, tmp)
+
+
+# モデルとデータの図 
+xtitle = "log Area (log(m<sup>2</sup>))" # markdown 
+ytitle = "Species (-)"
+
 ggplot(df1) +
+  geom_ribbon(aes(x = logArea,
+                  ymin = exp(fit - se.fit),
+                  ymax = exp(fit + se.fit)),
+              data = qdata,
+              alpha = 0.5) +
   geom_line(aes(x  = logArea, y = exp(fit)), 
-            data = pdata) +
-  geom_point(aes(x = logArea, y = Species))
-
-
-
+            data = qdata) +
+  geom_point(aes(x = logArea, y = Species)) +
+  scale_x_continuous(name = xtitle,
+                     limits = c(-5, 10),
+                     breaks = seq(-5, 10, by = 5)) +
+  scale_y_continuous(name = ytitle,
+                     limits = c(0, 650),
+                     breaks = seq(0, 650, by = 130)) +
+  theme(
+    axis.title.x = element_markdown(),
+    axis.title.y = element_markdown(),
+    axis.line.x = element_blank(),
+    axis.line.y = element_blank(),
+    axis.ticks.x = element_line(color = "black"),
+    axis.ticks.y = element_line(color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"),
+  )
 
 ggplot(df1) +
-  geom_point(aes(x = Scruz30, y = Species))
+  geom_line(aes(x = Scruz30, y = (fit),
+                color = factor(logArea)),
+            data = pdata ) + 
+  geom_point(aes(x = Scruz30, y = log(Species)))
 
 
+ggplot(df1) + 
+  geom_tile(aes(x = logArea,
+                y = Scruz30,
+                fill = exp(fit)), 
+            data = pdata) + 
+  geom_point(aes(x = logArea,
+                 y = Scruz30))
 
 
 
