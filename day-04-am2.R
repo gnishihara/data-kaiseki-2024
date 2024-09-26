@@ -4,6 +4,7 @@
 
 
 # パッケージの読み込み
+library(MASS)
 library(tidyverse)
 library(lubridate)
 library(ggtext)
@@ -79,8 +80,11 @@ plot1 + plot2 + plot3 + plot_layout(ncol = 2, nrow = 2)
 # では、ポアソン分布GLMを却下したら、つぎは
 # 負の二項分布GLMを検討する
 
+# MASS のパッケージには select() 関数がる
+# MASS の select()と tidyverse　select() 関数干渉します
+
 m1 = glm(Species ~ logAdj + logArea + logElev + Near5 + Scruz30,
-         data = df1, family = poisson("log"))
+         data = df1, family = ("log"))
 
 # ポアソン分布のGLMの場合、
 # Residual deviance の値と関係する自由度の値に大きな違いがあれば、
