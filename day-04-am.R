@@ -11,6 +11,7 @@ library(ggpubr)
 library(showtext)
 library(magick)
 library(emmeans)
+library(patchwork) # 図用の演算子
 
 # データの準備
 # :: <- この演算子は、パッケージにある関数・データを、パッケージを読まず使うためのものです。
@@ -42,7 +43,17 @@ ggplot(df2) +
 m1 = glm(Species ~ Adjacent + Area + Elevation + Nearest + Scruz,
          data = df1, family = gaussian("identity"))
 
-summary(m1)
+summary(m1) # 一般化線形モデルの係数表
+
+# モデルの診断図
+# 残渣、期待値、標準化残渣の絶対値の平方根
+df3 = df1 |> 
+  select(Species) |> 
+  mutate(residual = residuals(m1),
+         fit = predict(m1)) |> 
+  mutate(stdresid  = sqrt(abs(rstandard(m1))))
+
+
 
 
 
