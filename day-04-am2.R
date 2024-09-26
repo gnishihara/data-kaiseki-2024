@@ -79,27 +79,28 @@ plot1 + plot2 + plot3 + plot_layout(ncol = 2, nrow = 2)
 ############################################################
 # では、ポアソン分布GLMを却下したら、つぎは
 # 負の二項分布GLMを検討する
-
 # MASS のパッケージには select() 関数がる
 # MASS の select()と tidyverse　select() 関数干渉します
 
-m1 = glm(Species ~ logAdj + logArea + logElev + Near5 + Scruz30,
-         data = df1, family = ("log"))
+# 負の二項分布のリンク関数はログ関数です
 
-# ポアソン分布のGLMの場合、
+m2 = glm.nb(Species ~ logAdj + logArea + logElev + Near5 + Scruz30,
+         data = df1)
+
+# 負の二項分布のGLMの場合、
 # Residual deviance の値と関係する自由度の値に大きな違いがあれば、
 # モデルは却下します。
-summary(m1) # 一般化線形モデルの係数表
-# Residual deviance = 346
+summary(m2) # 一般化線形モデルの係数表
+# Residual deviance = 32.827
 # Residual deviance df = 24
-# 345 >> 24 なので、モデルを却下します
+# 345 ~ 24 なので、モデルを却下しません
 
 # モデルの診断図
 # 残渣、期待値、標準化残渣の絶対値の平方根
 df3 = df1 |> 
   select(Species) |> 
-  mutate(residual = qresiduals(m1),
-         fit = predict(m1)) |> 
+  mutate(residual = qresiduals(m2),
+         fit = predict(m2)) |> 
   filter(!is.infinite(residual)) |> # 無限の情報外す
   mutate(stdresid  = sqrt(abs(scale(residual)[, 1])))
 
@@ -113,10 +114,62 @@ plot3 =
 # ここでは patchwork の演算子を使って、上の図を結合する
 plot1 + plot2 + plot3 + plot_layout(ncol = 2, nrow = 2)
 
+df3 = df3 |> mutate(predict = exp(fit)) # ログスケールの期待地を観測スケールの値に戻す
+
+# 期待値と観測地の関係を確認
+# 完璧にあてはめられたら、点は線の上に並ぶ
+ggplot(df3)  +
+  geom_point(aes(x = predict, y = Species)) +
+  geom_abline(slope = 1)
+
+summary(m2)
+
+# 帰無仮説を棄却できなかった係数は、
+# モデルから外せる？
+# 帰無仮説を棄却できなかったということは、
+# 統計学的に係数と０の区別ができない。
+# でも、係数は０だといえない。
+
+stepAIC(m2) # AICの変化を利用して、係数を外す
+
+# のこった変数は logArea と Scruz30
 
 
+m3 = glm.nb(Species ~ logArea + Scruz30, data = df1)
 
+# 負の二項分布のGLMの場合、
+# Residual deviance の値と関係する自由度の値に大きな違いがあれば、
+# モデルは却下します。
+summary(m3) # 一般化線形モデルの係数表
+# Residual deviance = 32.86
+# Residual deviance df = 27
+# 32.86 ~ 27 なので、モデルを却下しません
 
+# モデルの診断図
+# 残渣、期待値、標準化残渣の絶対値の平方根
+df3 = df1 |> 
+  select(Species) |> 
+  mutate(residual = qresiduals(m3),
+         fit = predict(m3)) |> 
+  filter(!is.infinite(residual)) |> # 無限の情報外す
+  mutate(stdresid  = sqrt(abs(scale(residual)[, 1])))
 
+plot1 = ggplot(df3) + geom_point(aes(x = fit, y = residual))
+plot2 = ggplot(df3) + geom_point(aes(x = fit, y = stdresid))
+plot3 = 
+  ggplot(df3) +
+  geom_qq(aes(sample = residual)) +
+  geom_qq_line(aes(sample = residual))
 
+# ここでは patchwork の演算子を使って、上の図を結合する
+plot1 + plot2 + plot3 + plot_layout(ncol = 2, nrow = 2)
 
+df3 = df3 |> mutate(predict = exp(fit)) # ログスケールの期待地を観測スケールの値に戻す
+
+# 期待値と観測地の関係を確認
+# 完璧にあてはめられたら、点は線の上に並ぶ
+ggplot(df3)  +
+  geom_point(aes(x = predict, y = Species)) +
+  geom_abline(slope = 1)
+
+summary(m3)
