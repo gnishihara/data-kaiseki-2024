@@ -23,10 +23,30 @@ font_add_google("Noto Sans", family = "ns")
 theme_pubr(base_size = 10, base_family = "ns") |> theme_set()
 showtext_auto()
 
+# 参考文献
+# https://peerj.com/articles/6876/
+# Pedersen EJ, Miller DL, Simpson GL, Ross N. 2019. 
+# Hierarchical generalized additive models in ecology: an
+# introduction with mgcv. PeerJ 7:e6876
+# https://doi.org/10.7717/peerj.6876
+
 # データの準備
-# :: <- この演算子は、パッケージにある関数・データを、パッケージを読まず使うためのものです。
-df1 = faraway::gala |> as_tibble(rownames = "Island") # faraway パッケージのgala データを tibble化する
-df1 # ガラパゴス諸島の島のける植物の種数とその他の情報
+
+df1 = CO2 |> as_tibble()
+# conc: CO2 濃度
+# uptake: CO2吸収速度
+# Plant, type, treatment  # 因子
+# treatment: 前夜に低い温度を経験したか否か
+ggplot(df1) + 
+  geom_point(aes(x = conc, y = uptake, 
+                 color = Plant)) +
+  facet_grid(rows = vars(Treatment),
+             cols = vars(Type))
+
+
+
+
+
 
 
 
