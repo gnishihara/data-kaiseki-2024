@@ -23,8 +23,26 @@ ggplot(df1) + geom_point(aes(x = Area, y = Species))
 # 作業仮設：種数は面積および高度と正の関係があり、距離と負の関係がある
 # それぞれの説明変数との関係を見る
 
+df2 = df1 |> 
+  pivot_longer(cols = c("Area", "Elevation",
+                        "Nearest","Scruz", "Adjacent"))
 
+ggplot(df2) + 
+  geom_point(aes(x = value, y = Species, color = name)) +
+  facet_wrap(vars(name), scales = "free")
 
+# 作業仮設を検証しましょう
+# 帰無仮説：
+# （１）Species と Adjacent との関係はない
+# （２）Species と Area との関係はない
+# （３）Species と Elevation との関係はない
+# （４）Species と Nearest との関係はない
+# （５）Species と Scruz との関係はない
+
+m1 = glm(Species ~ Adjacent + Area + Elevation + Nearest + Scruz,
+         data = df1, family = gaussian("identity"))
+
+summary(m1)
 
 
 
