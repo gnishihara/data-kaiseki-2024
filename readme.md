@@ -10,7 +10,7 @@
 
 ## 課題解答動画
 
-** 演習I** 
+**演習I** 
 
 * [1 日目の課題 (Day01/day-01-homework.R)](https://youtu.be/9vSSQeN617w)
 * [2 日目の課題の解答は演習2日AM0の動画を参考に](https://youtu.be/K2JnpWuzfNw)
@@ -22,7 +22,7 @@
 
 ## 演習動画
 
-** 演習I** 
+**演習I** 
 
 * [1 日目 AM 1](https://youtu.be/GXtI2n8gun8)
 * [1 日目 AM 2](https://youtu.be/tbYb2qrHGjQ)
