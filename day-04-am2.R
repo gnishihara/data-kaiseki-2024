@@ -48,14 +48,21 @@ df1 |>
 m1 = glm(Species ~ logAdj + logArea + logElev + Near5 + Scruz30,
          data = df1, family = poisson("log"))
 
+# ポアソン分布のGLMの場合、
+# Residual deviance の値と関係する自由度の値に大きな違いがあれば、
+# モデルは却下します。
 summary(m1) # 一般化線形モデルの係数表
+# Residual deviance = 346
+# Residual deviance df = 24
+# 345 >> 24 なので、モデルを却下します
 
 # モデルの診断図
 # 残渣、期待値、標準化残渣の絶対値の平方根
 df3 = df1 |> 
   select(Species) |> 
-  mutate(residual = qresiduals(m2),
-         fit = predict(m2)) |> 
+  mutate(residual = qresiduals(m1),
+         fit = predict(m1)) |> 
+  filter(!is.infinite(residual)) |> # 無限の情報外す
   mutate(stdresid  = sqrt(abs(scale(residual)[, 1])))
 
 plot1 = ggplot(df3) + geom_point(aes(x = fit, y = residual))
@@ -67,3 +74,45 @@ plot3 =
 
 # ここでは patchwork の演算子を使って、上の図を結合する
 plot1 + plot2 + plot3 + plot_layout(ncol = 2, nrow = 2)
+
+############################################################
+# では、ポアソン分布GLMを却下したら、つぎは
+# 負の二項分布GLMを検討する
+
+m1 = glm(Species ~ logAdj + logArea + logElev + Near5 + Scruz30,
+         data = df1, family = poisson("log"))
+
+# ポアソン分布のGLMの場合、
+# Residual deviance の値と関係する自由度の値に大きな違いがあれば、
+# モデルは却下します。
+summary(m1) # 一般化線形モデルの係数表
+# Residual deviance = 346
+# Residual deviance df = 24
+# 345 >> 24 なので、モデルを却下します
+
+# モデルの診断図
+# 残渣、期待値、標準化残渣の絶対値の平方根
+df3 = df1 |> 
+  select(Species) |> 
+  mutate(residual = qresiduals(m1),
+         fit = predict(m1)) |> 
+  filter(!is.infinite(residual)) |> # 無限の情報外す
+  mutate(stdresid  = sqrt(abs(scale(residual)[, 1])))
+
+plot1 = ggplot(df3) + geom_point(aes(x = fit, y = residual))
+plot2 = ggplot(df3) + geom_point(aes(x = fit, y = stdresid))
+plot3 = 
+  ggplot(df3) +
+  geom_qq(aes(sample = residual)) +
+  geom_qq_line(aes(sample = residual))
+
+# ここでは patchwork の演算子を使って、上の図を結合する
+plot1 + plot2 + plot3 + plot_layout(ncol = 2, nrow = 2)
+
+
+
+
+
+
+
+
