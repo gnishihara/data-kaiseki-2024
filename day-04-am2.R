@@ -293,6 +293,11 @@ qdata = df1 |>
 
 tmp = predict(m3, newdata = qdata, se.fit = TRUE) |> as_tibble()
 qdata = bind_cols(qdata, tmp)
+qdata = qdata |> 
+  mutate(level = factor(Scruz30, labels = c("Minimum distance",
+                                            "Median distance",
+                                            "Maximum distance")))
+
 
 # Areaの中央値に対するScruz30の結果
 
@@ -303,30 +308,35 @@ rdata = df1 |>
          logArea = log(Area))
 tmp = predict(m3, newdata = rdata, se.fit = TRUE) |> as_tibble()
 rdata = bind_cols(rdata, tmp)
-
-
-
+rdata = rdata |> 
+  mutate(level = factor(Area, labels = c("Minimum area",
+                                         "Median area",
+                                         "Maximum area")))
 # モデルとデータの図 
-xtitle = "log Area (log(m<sup>2</sup>))" # markdown 
+xtitle = "Area (m<sup>2</sup>)" # markdown 
 ytitle = "Species (-)"
 # Scruzの中央値に対するlogArea との関係を示す図。
 # 線はモデル結果（期待値）、グレーの範囲は期待値の95%信頼区間。
 ggplot(df1) +
-  geom_ribbon(aes(x = logArea,
+  geom_ribbon(aes(x = Area,
                   ymin = exp(fit - se.fit),
                   ymax = exp(fit + se.fit),
-                  fill = factor(Scruz)),
+                  fill = level),
               data = qdata,
               alpha = 0.5) +
-  geom_line(aes(x  = logArea, y = exp(fit), color = factor(Scruz)), 
+  geom_line(aes(x  = Area, y = exp(fit), color = level), 
             data = qdata) +
-  geom_point(aes(x = logArea, y = Species)) +
+  geom_point(aes(x = Area, y = Species)) +
   scale_x_continuous(name = xtitle,
-                     limits = c(-5, 10),
-                     breaks = seq(-5, 10, by = 5)) +
+                     limits = c(0.01, 10000),
+                     breaks = 10^seq(-2, 4, by = 1),
+                     labels = scales::label_log(),
+                     transform = "log10") +
   scale_y_continuous(name = ytitle,
                      limits = c(0, 800),
                      breaks = seq(0, 800, length = 5)) +
+  scale_fill_viridis_d(end = 0.9) +
+  scale_color_viridis_d(end = 0.9) +
   theme(
     axis.title.x = element_markdown(),
     axis.title.y = element_markdown(),
@@ -335,6 +345,11 @@ ggplot(df1) +
     axis.ticks.x = element_line(color = "black"),
     axis.ticks.y = element_line(color = "black"),
     panel.border = element_rect(fill = NA, color = "black"),
+    legend.position = "inside",
+    legend.position.inside = c(0, 1),
+    legend.justification = c(0, 1),
+    legend.background = element_blank(),
+    legend.title = element_blank()
   )
 
 xtitle2 = "Distance to Santa Cruz (km / 30)"
