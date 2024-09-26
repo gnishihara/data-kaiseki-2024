@@ -415,13 +415,49 @@ img = image_read_pdf(pdfname, density = 300)
 image_write(img, path = pngname)
 
 
-ggplot(df1) + 
-  geom_tile(aes(x = logArea,
-                y = Scruz30,
-                fill = exp(fit)), 
-            data = pdata) + 
-  geom_point(aes(x = logArea,
-                 y = Scruz30))
+
+summary(m3)
+
+# 方法の書き方
+version
+citation()
+
+# The number of species observed in the Galapagos Islands
+# were analyzed with a generalized linear model (GLM). The 
+# model distribution was a negative binomial distribution 
+# and the link function was a natural log function. The 
+# explanatory variables used in the model was island area,
+# area of the nearest island, island height, distance to the
+# nearest island, and the distance to Santa Cruz Island.
+# Step AIC was used to remove unimportant explanatory
+# variables. The model residuals were checked visually. 
+# The analysis was done with R version 4.4.1 (R Core Team 2024).
+
+# 結果の書き方 
+
+# The step AIC indicated that natural log of area and scaled 
+# distance to Santa Cruz Island were the most important 
+# variables in the model. The coefficient for natural log of 
+# area was 0.351 (0.0335, standard error; z = 10.49,
+#  P <= 0.0001). The coefficient of scaled distance to 
+#  Santa Cruz Island was -0.103 (0.052, z = -1.98, 
+#  P = 0.0477). 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
