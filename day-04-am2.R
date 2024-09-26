@@ -317,6 +317,8 @@ xtitle = "Area (m<sup>2</sup>)" # markdown
 ytitle = "Species (-)"
 # Scruzの中央値に対するlogArea との関係を示す図。
 # 線はモデル結果（期待値）、グレーの範囲は期待値の95%信頼区間。
+
+plot1 = 
 ggplot(df1) +
   geom_ribbon(aes(x = Area,
                   ymin = exp(fit - se.fit),
@@ -353,6 +355,7 @@ ggplot(df1) +
   )
 
 xtitle2 = "Distance to Santa Cruz (km)"
+plot2 = 
 ggplot(df1) +
   geom_ribbon(aes(x = Scruz,
                   ymin = exp(fit - se.fit),
@@ -369,6 +372,8 @@ ggplot(df1) +
   scale_y_continuous(name = ytitle,
                      limits = c(0, 800),
                      breaks = seq(0, 800, length = 5)) +
+  scale_fill_viridis_d(end = 0.9) +
+  scale_color_viridis_d(end = 0.9) +
   theme(
     axis.title.x = element_markdown(),
     axis.title.y = element_markdown(),
@@ -383,6 +388,14 @@ ggplot(df1) +
     legend.background = element_blank(),
     legend.title = element_blank()
   )
+
+
+plot1 + plot2 + plot_layout(ncol = 2)
+
+pdfname = "galapagos_ab.pdf"
+pngname = str_replace(pdfname, "pdf", "png")
+ggsave(filename = pdfname, 
+       width = 160, height = 80, units = "mm")
 
 
 ggplot(df1) + 
