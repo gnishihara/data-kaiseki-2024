@@ -419,14 +419,16 @@ image_write(img, path = pngname)
 summary(m3)
 
 # 方法の書き方
-version
-citation()
+version　 # R のバージョンの確認
+citation() # Rの引用方法の確認
+citation("MASS") # MASS パッケージの文献
 
 # The number of species observed in the Galapagos Islands
 # were analyzed with a generalized linear model (GLM). The 
 # model distribution was a negative binomial distribution 
-# and the link function was a natural log function. The 
-# explanatory variables used in the model was island area,
+# and the link function was a natural log function 
+# (Venebles and Ripley 2002). The explanatory variables used 
+# in the model was island area,
 # area of the nearest island, island height, distance to the
 # nearest island, and the distance to Santa Cruz Island.
 # Step AIC was used to remove unimportant explanatory
