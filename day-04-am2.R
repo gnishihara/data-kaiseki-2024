@@ -287,16 +287,17 @@ ggplot(df1) +
 
 qdata = df1 |> 
   expand(logArea = seq(min(logArea), max(logArea), length = 21),
-         Scruz30 = median(Scruz30)) |> 
+         Scruz30 = c(min(Scruz30), median(Scruz30), max(Scruz30))) |> 
   mutate(Area = exp(logArea),
          Scruz = Scruz30 * 30)
+
 tmp = predict(m3, newdata = qdata, se.fit = TRUE) |> as_tibble()
 qdata = bind_cols(qdata, tmp)
 
 # Areaの中央値に対するScruz30の結果
 
 rdata = df1 |> 
-  expand(Area = median(Area),
+  expand(Area = c(min(Area), median(Area), max(Area)),
          Scruz30 = seq(min(Scruz30), max(Scruz30), length = 21)) |> 
   mutate(Scruz = Scruz30 * 30,
          logArea = log(Area))
@@ -313,18 +314,19 @@ ytitle = "Species (-)"
 ggplot(df1) +
   geom_ribbon(aes(x = logArea,
                   ymin = exp(fit - se.fit),
-                  ymax = exp(fit + se.fit)),
+                  ymax = exp(fit + se.fit),
+                  fill = factor(Scruz)),
               data = qdata,
               alpha = 0.5) +
-  geom_line(aes(x  = logArea, y = exp(fit)), 
+  geom_line(aes(x  = logArea, y = exp(fit), color = factor(Scruz)), 
             data = qdata) +
   geom_point(aes(x = logArea, y = Species)) +
   scale_x_continuous(name = xtitle,
                      limits = c(-5, 10),
                      breaks = seq(-5, 10, by = 5)) +
   scale_y_continuous(name = ytitle,
-                     limits = c(0, 650),
-                     breaks = seq(0, 650, by = 130)) +
+                     limits = c(0, 800),
+                     breaks = seq(0, 800, length = 5)) +
   theme(
     axis.title.x = element_markdown(),
     axis.title.y = element_markdown(),
