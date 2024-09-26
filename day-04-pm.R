@@ -63,9 +63,8 @@ basis(m1) |> draw() # 基底毎の図
 
 
 tmp = gam(uptake ~ s(conc, k = 3, bs = "tp"), data = df1)
-draw(tmp)
+draw(tmp, residuals = T)
 basis(tmp) |> draw()
-coef(tmp)
 
 t1 = basis(tmp) |> filter(.bf == 1) |> pull(.value)
 t2 = basis(tmp) |> filter(.bf == 2) |> pull(.value)
@@ -76,5 +75,98 @@ tibble(conc, t1, t2) |>
   geom_line(aes( x= conc, y = t1, color = "basis 1")) +
   geom_line(aes( x= conc, y = t2, color = "basis 2")) +
   geom_line(aes( x= conc, y = t1 + t2, color = "basis 1 + 2"),
-            linewidth = 2) 
+            linewidth = 2)
+
+# スムーズ(の基底数をあげよう
+df1 |> pull(conc) |> unique()
+
+m3 = gam(uptake ~ s(conc, k = 3, bs = "tp"), data = df1)
+m4 = gam(uptake ~ s(conc, k = 4, bs = "tp"), data = df1)
+m5 = gam(uptake ~ s(conc, k = 5, bs = "tp"), data = df1)
+m6 = gam(uptake ~ s(conc, k = 6, bs = "tp"), data = df1)
+m7 = gam(uptake ~ s(conc, k = 7, bs = "tp"), data = df1)
+# k = 3 から k = 5 にした場合、スムーズの形が変わる
+# k = 5 から k - 7 にした場合、形の変化が小さい
+draw(m3)
+draw(m5)
+draw(m7)
+
+AIC(m3, m4, m5, m6, m7)
+
+summary(m5)
+# Parametric coefficients
+# 
+# Approximate signficance of smooth terms
+# s(conc) F(3.442, 3.811) = 13.72; P <= 0.00001
+# スムーズは重要
+
+# R-sq (adj) = 0.388 # 当てはめの良さの指標
+# Deviance explained = = 41.1% どの程度、データを説明しているのか
+
+# type ごと解析 #######################################
+
+ggplot(df1) + 
+  geom_point(aes(x = conc, y = uptake)) +
+  facet_wrap(vars(Type))
+
+m0 = gam(uptake ~ s(conc, k = 7), data = df1)
+m1 = gam(uptake ~ s(conc, k = 7, by = Type) + Type,
+         data = df1)
+summary(m1)
+
+# Parametric coefficients:
+#   Estimate Std. Error t value Pr(>|t|)    
+#   (Intercept)      33.5429     0.7899   42.46   <2e-16 ***
+#   TypeMississippi -12.6595     1.1171  -11.33   <2e-16 ***
+# 
+# Approximate significance of smooth terms:
+#                             edf Ref.df      F  p-value    
+#   s(conc):TypeQuebec      4.062  4.712 27.105  < 2e-16 ***
+#   s(conc):TypeMississippi 3.081  3.683  9.558 1.02e-05 ***
+# 
+# R-sq.(adj) =  0.776   Deviance explained = 79.8%
+# GCV = 29.407  Scale est. = 26.206    n = 84
+
+draw(m1)
+
+# 全データをプールした解析と
+# Type 毎に解析したモデルの比較をすると：
+
+AIC(m0, m1) # 低いほうがいい
+
+m2 = gam(uptake ~ 
+      s(conc, k = 7, by = Type) +
+      s(conc, k = 7, by = Treatment) +
+      Type + Treatment,
+    data = df1)
+draw(m2)
+
+AIC(m0, m1, m2) # m2 がいい
+
+m3 = gam(uptake ~ 
+      s(conc, k = 7, by = Type) +
+      s(conc, k = 7, by = Treatment) +
+          Type * Treatment, 
+    data = df1)
+summary(m3)
+draw(m3)
+AIC(m0, m1, m2, m3)
+
+
+pdata = df1 |> 
+  expand(Type, Treatment,
+         conc = seq(min(conc), max(conc), length = 21))
+tmp = predict(m3, newdata = pdata, se.fit = T) |> as_tibble()
+
+pdata = bind_cols(pdata, tmp)
+
+ggplot() + 
+  geom_line(aes(x = conc, y = fit),
+            data = pdata) +
+  geom_point(aes( x = conc, y = uptake),
+             data = df1) + 
+  facet_grid(rows = vars(Type),
+             cols = vars(Treatment))
+
+  
 
