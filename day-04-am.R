@@ -53,7 +53,13 @@ df3 = df1 |>
          fit = predict(m1)) |> 
   mutate(stdresid  = sqrt(abs(rstandard(m1))))
 
+plot1 = ggplot(df3) + geom_point(aes(x = fit, y = residual))
+plot2 = ggplot(df3) + geom_point(aes(x = fit, y = stdresid))
+plot3 = 
+  ggplot(df3) +
+  geom_qq(aes(sample = residual)) +
+  geom_qq_line(aes(sample = residual))
 
-
-
+# ここでは patchwork の演算子を使って、上の図を結合する
+plot1 + plot2 + plot3 + plot_layout(ncol = 2, nrow = 2)
 
