@@ -18,7 +18,7 @@
 
 **演習II**
 
-* [4 日目の課題 (Day04/day-04-homework.R)]
+* [4 日目の課題 (Day04/day-04-homework.R)](https://youtu.be/7j9NjCZLNRU)
 
 ## 演習動画
 
