@@ -12,6 +12,7 @@ library(showtext)
 library(magick)
 library(emmeans)
 library(patchwork) # 図用の演算子
+library(statmod) # ランダム化残渣の関数用
 
 # データの準備
 # :: <- この演算子は、パッケージにある関数・データを、パッケージを読まず使うためのものです。
@@ -42,18 +43,20 @@ df1 |>
 # （４）Species と Nearest/5 との関係はない
 # （５）Species と Scruz/30 との関係はない
 
-m2 = glm(Species ~ logAdj + logArea + logElev + Near5 + Scruz30,
-         data = df1, family = gaussian("identity"))
+# ポアソン分布、リンク関数はログ
+# ポアソン分布は離散型の分布(数の分布)
+m1 = glm(Species ~ logAdj + logArea + logElev + Near5 + Scruz30,
+         data = df1, family = poisson("log"))
 
-summary(m2) # 一般化線形モデルの係数表
+summary(m1) # 一般化線形モデルの係数表
 
 # モデルの診断図
 # 残渣、期待値、標準化残渣の絶対値の平方根
 df3 = df1 |> 
   select(Species) |> 
-  mutate(residual = residuals(m2),
+  mutate(residual = qresiduals(m2),
          fit = predict(m2)) |> 
-  mutate(stdresid  = sqrt(abs(rstandard(m2))))
+  mutate(stdresid  = sqrt(abs(scale(residual)[, 1])))
 
 plot1 = ggplot(df3) + geom_point(aes(x = fit, y = residual))
 plot2 = ggplot(df3) + geom_point(aes(x = fit, y = stdresid))
