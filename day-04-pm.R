@@ -51,9 +51,30 @@ ggplot(df1) +
              cols = vars(Type))
 
 # Generalized Additive Model (GAM) のあてはめ
+# 全データをまとめて、モデルをあてはめている
 m1 = gam(uptake ~ s(conc, k = 5, bs = "tp"), data = df1)
 draw(m1) # gratia パッケージの関数
-basis(m1) |> draw()
+# s() スムーズの関数
+#  第1引数は説明変数
+#  k = 5 スムーズの基底の数
+#  bs = "tp" スムーズの種類、このとき薄板平滑化スプライン
+
+basis(m1) |> draw() # 基底毎の図
 
 
+tmp = gam(uptake ~ s(conc, k = 3, bs = "tp"), data = df1)
+draw(tmp)
+basis(tmp) |> draw()
+coef(tmp)
+
+t1 = basis(tmp) |> filter(.bf == 1) |> pull(.value)
+t2 = basis(tmp) |> filter(.bf == 2) |> pull(.value)
+conc = basis(tmp) |> filter(.bf == 2) |> pull(conc)
+
+tibble(conc, t1, t2) |> 
+  ggplot() + 
+  geom_line(aes( x= conc, y = t1, color = "basis 1")) +
+  geom_line(aes( x= conc, y = t2, color = "basis 2")) +
+  geom_line(aes( x= conc, y = t1 + t2, color = "basis 1 + 2"),
+            linewidth = 2) 
 
