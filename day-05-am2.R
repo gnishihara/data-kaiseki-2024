@@ -121,7 +121,7 @@ m4 = glm(logL ~ logW * class, data = df1)
 AIC(m0, m1, m2, m3, m4)
 
 m3 # AIC が最も低い
-
+m3_loglog = m3
 df1 = df1 |> mutate(residuals = residuals(m3),
                     fit = predict(m3),
                     stdresid = sqrt(abs(scale(residuals)[,1])))
@@ -143,3 +143,34 @@ AIC(m3, m4_gamma)  # m3
 summary(m3)
 
 
+
+# Gamma分布、logW のモデル
+
+m0 = glm(length ~ 1, data = df1, family = Gamma("log"))
+m1 = glm(length ~ logW , data = df1, family = Gamma("log"))
+m2 = glm(length ~ class, data = df1, family = Gamma("log"))
+m3 = glm(length ~ logW + class, data = df1, family = Gamma("log"))
+m4 = glm(length ~ logW * class, data = df1, family = Gamma("log"))
+AIC(m0, m1, m2, m3, m4)
+
+m3　# AIC がもっとも低い
+
+m3_gamma_logW = m3
+
+df1 = df1 |> mutate(residuals = statmod::qresiduals(m3_gamma_logW),
+                    fit = predict(m3_gamma_logW),
+                    stdresid = sqrt(abs(scale(residuals)[,1])))
+
+
+p1 = ggplot(df1) + geom_point(aes(x = fit, y = residuals))
+p2 = ggplot(df1) + geom_point(aes(x = fit, y = stdresid))
+p3 = ggplot(df1) + 
+  geom_qq(aes(sample = residuals)) +
+  geom_qq_line(aes(sample = residuals))
+
+p1 + p2 + p3 + plot_layout(nrow = 2, ncol = 2)
+
+
+AIC(m3_loglog, m4_gamma, m3_gamma_logW)  # m3_loglog のAICがもっとも低いのです、採択する
+
+summary(m3_loglog)
