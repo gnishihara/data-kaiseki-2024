@@ -133,6 +133,25 @@ summary(m3)
 # モデル選択
 AIC(m1, m2, m3, m4)
 
+# モデル診断
+df1 = df1 |> 
+  mutate(residuals = residuals(m4),
+         fit = predict(m4)) |> 
+  mutate(stdresid = sqrt(abs(scale(residuals)[, 1])))
+
+p1 = ggplot(df1) + geom_point(aes(x = fit, y = resdiuals))
+p2 = ggplot(df1) + geom_point(aes(x = fit, y = stdresid))
+p3 = ggplot(df1) + 
+  geom_qq(aes(sample = residuals)) +
+  geom_qq_line(aes(sample = residuals))
+
+p1 + p2 + p3 + plot_layout(nrows = 2, ncols = 2)
+
+
+
+
+
+
 
 
 
