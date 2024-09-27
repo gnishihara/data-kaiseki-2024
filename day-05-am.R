@@ -177,20 +177,87 @@ ggplot(df1) +
              cols = vars(Treatment))
 
 # 95% 信頼区間ありの図
+m4boot = nlsBoot(m4, niter = 2000)
+pdata = 
+  df1 |> 
+  group_by(i, Type, Treatment) |> 
+  expand(conc = seq(min(conc), max(conc), length = 21)) |> 
+  ungroup()
+
+m4boot$coefboot |> as_tibble() # bootstrap から抽出した係数のサンプル
+m4boot$estiboot |> as_tibble() # bootstrap から抽出した係数の平均値
+m4boot$bootCI |> as_tibble()   # bootstrap から抽出した係数の95%CI
+
+cfdata = m4boot$coefboot |> as_tibble() # bootstrap から抽出した係数のサンプル
+
+cfdata = cfdata |> 
+  mutate(n = 1:n(), .before = 1)
+
+cfdata = cfdata |> 
+  pivot_longer(cols = -n)
+
+cfdata = cfdata |> 
+  mutate(i = str_extract(name, "\\d{1}$")) |> 
+  mutate(i = as.integer(i))
+
+cfdata |> 
+  group_nest(n, i)
+
+pdata = pdata |> group_nest(i)
+cfdata = cfdata |> group_nest(n, i, .key = "cf") 
 
 
+pdata = full_join(pdata, cfdata, by = "i")
 
+pdata2 = pdata |> 
+  mutate(data = map2(data, cf, \(df, cf) {
+    fit = uptake_model(x = df$conc,
+                 p1 = cf$value[1],
+                 p2 = cf$value[2],
+                 p3 = cf$value[3])
+    tibble(fit, conc = df$conc)
+  })) 
 
+pdata2 = pdata2 |> 
+  select(i, data) |> 
+  unnest(data) |> 
+  group_by(i, conc) |> 
+  summarise(mean = mean(fit),
+            sd = sd(fit),
+            n = length(fit), 
+            .groups = "drop")
 
+tmp = df1 |> 
+  select(i, Type, Treatment) |> 
+  distinct()
 
+pdata2  = full_join(tmp, pdata2)
 
+# Bootstrap の平均値と１標準偏差
+ggplot(df1) + 
+  geom_ribbon(aes(x = conc, 
+                  ymin = mean - sd,
+                  ymax = mean + sd),
+              data = pdata2,
+              alpha = 0.5) +
+  geom_line(aes(x = conc, y = mean), 
+            data = pdata2) +
+  geom_point(aes(x = conc, y = uptake)) +
+  facet_grid(rows = vars(Type),
+             cols = vars(Treatment))
 
-
-
-
-
-
-
+# Bootstrap の平均値と95%信頼区間
+ggplot(df1) + 
+  geom_ribbon(aes(x = conc, 
+                  ymin = mean - 1.96 * sd,
+                  ymax = mean + 1.96 * sd),
+              data = pdata2,
+              alpha = 0.5) +
+  geom_line(aes(x = conc, y = mean), 
+            data = pdata2) +
+  geom_point(aes(x = conc, y = uptake)) +
+  facet_grid(rows = vars(Type),
+             cols = vars(Treatment))
 
 
 
