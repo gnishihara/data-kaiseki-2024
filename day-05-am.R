@@ -205,10 +205,7 @@ cfdata |>
 
 pdata = pdata |> group_nest(i)
 cfdata = cfdata |> group_nest(n, i, .key = "cf") 
-
-
 pdata = full_join(pdata, cfdata, by = "i")
-
 pdata2 = pdata |> 
   mutate(data = map2(data, cf, \(df, cf) {
     fit = uptake_model(x = df$conc,
@@ -217,7 +214,6 @@ pdata2 = pdata |>
                  p3 = cf$value[3])
     tibble(fit, conc = df$conc)
   })) 
-
 pdata2 = pdata2 |> 
   select(i, data) |> 
   unnest(data) |> 
@@ -226,11 +222,9 @@ pdata2 = pdata2 |>
             sd = sd(fit),
             n = length(fit), 
             .groups = "drop")
-
 tmp = df1 |> 
   select(i, Type, Treatment) |> 
   distinct()
-
 pdata2  = full_join(tmp, pdata2)
 
 # Bootstrap の平均値と１標準偏差
