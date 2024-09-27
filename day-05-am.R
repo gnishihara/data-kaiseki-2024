@@ -86,7 +86,7 @@ df1 = df1 |>
   mutate(i = 1:4, .before = Type) |> 
   unnest(data)
 
-m2 = nls(uptake ~ uptake_model(x = conc,
+m4 = nls(uptake ~ uptake_model(x = conc,
                           p1 = p1[i],
                           p2 = p2[i],
                           p3 = p3[i]),
@@ -95,7 +95,7 @@ m2 = nls(uptake ~ uptake_model(x = conc,
                  p2 = rep(30/250, 4),
                  p3 = rep(30, 4)))
 
-summary(m2)
+summary(m4)
 
 # モデル2（Treatment ごとの係数）
 df1 = df1 |> 
@@ -114,7 +114,20 @@ m2 = nls(uptake ~ uptake_model(x = conc,
 summary(m2)
 
 # モデル3（Type ごとの係数）
+df1 = df1 |> 
+  group_nest(Treatment) |> 
+  mutate(k = 1:2) |> unnest(data)
 
+m3 = nls(uptake ~ uptake_model(x = conc,
+                               p1 = p1[k],
+                               p2 = p2[k],
+                               p3 = p3[k]),
+         data = df1,
+         start = list(p1 = rep(10, 2),
+                      p2 = rep(30/250, 2),
+                      p3 = rep(30, 2)))
+
+summary(m3)
 
 
 
