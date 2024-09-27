@@ -158,6 +158,7 @@ summary(m4)$coefficients |>
   as_tibble(rownames = "coefficient") |> 
   write_csv(file = csvname)
 
+# モデル用のデータ
 pdata = 
   df1 |> 
   group_by(i, Type, Treatment) |> 
@@ -174,6 +175,14 @@ ggplot(df1) +
   geom_point(aes(x = conc, y = uptake)) +
   facet_grid(rows = vars(Type),
              cols = vars(Treatment))
+
+# 95% 信頼区間ありの図
+
+
+
+
+
+
 
 
 
