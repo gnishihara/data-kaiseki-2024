@@ -10,6 +10,7 @@ library(ggpubr)
 library(ggtext)
 library(showtext)
 library(magick)
+library(patchwork)
 
 # データの準備
 
@@ -139,13 +140,13 @@ df1 = df1 |>
          fit = predict(m4)) |> 
   mutate(stdresid = sqrt(abs(scale(residuals)[, 1])))
 
-p1 = ggplot(df1) + geom_point(aes(x = fit, y = resdiuals))
+p1 = ggplot(df1) + geom_point(aes(x = fit, y = residuals))
 p2 = ggplot(df1) + geom_point(aes(x = fit, y = stdresid))
 p3 = ggplot(df1) + 
   geom_qq(aes(sample = residuals)) +
   geom_qq_line(aes(sample = residuals))
 
-p1 + p2 + p3 + plot_layout(nrows = 2, ncols = 2)
+p1 + p2 + p3 + plot_layout(nrow = 2, ncol = 2)
 
 
 
