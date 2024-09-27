@@ -206,6 +206,7 @@ cfdata |>
 pdata = pdata |> group_nest(i)
 cfdata = cfdata |> group_nest(n, i, .key = "cf") 
 pdata = full_join(pdata, cfdata, by = "i")
+
 pdata2 = pdata |> 
   mutate(data = map2(data, cf, \(df, cf) {
     fit = uptake_model(x = df$conc,
@@ -225,7 +226,10 @@ pdata2 = pdata2 |>
 tmp = df1 |> 
   select(i, Type, Treatment) |> 
   distinct()
+
 pdata2  = full_join(tmp, pdata2)
+
+pdata2
 
 # Bootstrap の平均値と１標準偏差
 ggplot(df1) + 
