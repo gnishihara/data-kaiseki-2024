@@ -130,8 +130,8 @@ m3 = nls(uptake ~ uptake_model(x = conc,
 summary(m3)
 
 
-
-
+# モデル選択
+AIC(m1, m2, m3, m4)
 
 
 
