@@ -131,10 +131,10 @@ m3 = nls(uptake ~ uptake_model(x = conc,
 summary(m3)
 
 
-# モデル選択
+# モデル選択 ###############################################
 AIC(m1, m2, m3, m4)
 
-# モデル診断
+# モデル診断 ###############################################
 df1 = df1 |> 
   mutate(residuals = residuals(m4),
          fit = predict(m4)) |> 
@@ -147,6 +147,46 @@ p3 = ggplot(df1) +
   geom_qq_line(aes(sample = residuals))
 
 p1 + p2 + p3 + plot_layout(nrow = 2, ncol = 2)
+
+# 結果について #############################################
+
+summary(m4)
+
+# 次のコードは非線形モデルの係数の結果をcsvファイルに保存する
+csvname = "nls_coefficients.csv"
+summary(m4)$coefficients |> 
+  as_tibble(rownames = "coefficient") |> 
+  write_csv(file = csvname)
+
+pdata = 
+  df1 |> 
+  group_by(i, Type, Treatment) |> 
+  expand(conc = seq(min(conc), max(conc), length = 21)) |> 
+  ungroup()
+
+# 非線形モデルなので、se.fit=Tはできない
+fit = predict(m4, newdata = pdata)
+pdata = pdata |> mutate(fit = fit)
+
+ggplot(df1) + 
+  geom_line(aes(x = conc, y = fit), 
+            data = pdata) + 
+  geom_point(aes(x = conc, y = uptake)) +
+  facet_grid(rows = vars(Type),
+             cols = vars(Treatment))
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
